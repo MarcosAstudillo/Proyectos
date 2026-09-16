@@ -1,212 +1,304 @@
 <!DOCTYPE html>
-<html lang="es" class="h-100" data-bs-theme="auto">
+<html lang="es" data-bs-theme="dark">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Plantilla Cover de Bootstrap 5">
-  <title>Cover Template · Bootstrap v5.3</title>
-
-  <!-- Script para el selector de tema (Claro / Oscuro / Auto) -->
-  <script src="js/color-modes.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KMKCStats - La fuente de confianza para todo sobre Clan Wars 2 en Clash Royale. Estadísticas y analítica de clanes, jugadores y mazos.">
+  <meta name="author" content="Marcos Astudillo Bermúdez">
+  <title>KMKCStats · La fuente de confianza para Clan Wars</title>
 
   <!-- Bootstrap 5 CSS Local -->
-  <link href="lib/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="lib/bootstrap-5.3.8-dist/css/bootstrap.min.css">
 
-  <!-- Estilos propios de la plantilla Cover -->
-  <link href="styles/cover.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-
-    .b-example-divider {
-      width: 100%;
-      height: 3rem;
-      background-color: rgba(0, 0, 0, .1);
-      border: solid rgba(0, 0, 0, .15);
-      border-width: 1px 0;
-      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
-
-    .b-example-vr {
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 100vh;
-    }
-
-    .bi {
-      vertical-align: -.125em;
-      fill: currentColor;
-    }
-
-    .nav-scroller {
-      position: relative;
-      z-index: 2;
-      height: 2.75rem;
-      overflow-y: hidden;
-    }
-
-    .nav-scroller .nav {
-      display: flex;
-      flex-wrap: nowrap;
-      padding-bottom: 1rem;
-      margin-top: -1px;
-      overflow-x: auto;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .btn-bd-primary {
-      --bd-violet-bg: #712cf9;
-      --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-      --bs-btn-font-weight: 600;
-      --bs-btn-color: var(--bs-white);
-      --bs-btn-bg: var(--bd-violet-bg);
-      --bs-btn-border-color: var(--bd-violet-bg);
-      --bs-btn-hover-color: var(--bs-white);
-      --bs-btn-hover-bg: #6528e0;
-      --bs-btn-hover-border-color: #6528e0;
-      --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-      --bs-btn-active-color: var(--bs-btn-hover-color);
-      --bs-btn-active-bg: #5a23c8;
-      --bs-btn-active-border-color: #5a23c8;
-    }
-
-    .bd-mode-toggle {
-      z-index: 1500;
-    }
-
-    .bd-mode-toggle .bi {
-      width: 1em;
-      height: 1em;
-    }
-
-    .bd-mode-toggle .dropdown-menu .active .bi {
-      display: block !important;
-    }
-  </style>
+  <!-- Estilos Exclusivos KMKCStats (Diseño CWStats) -->
+  <link rel="stylesheet" href="styles/kmkcstats.css">
 </head>
 
-<body class="d-flex h-100 text-center text-bg-dark">
-  <!-- Definición de iconos SVG para el selector de tema -->
-  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-    <symbol id="check2" viewBox="0 0 16 16">
-      <path
-        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-      </path>
-    </symbol>
-    <symbol id="circle-half" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
-    </symbol>
-    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-      <path
-        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
-      </path>
-      <path
-        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
-      </path>
-    </symbol>
-    <symbol id="sun-fill" viewBox="0 0 16 16">
-      <path
-        d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
-      </path>
-    </symbol>
-  </svg>
+<body>
 
-  <!-- Botón Dropdown para cambiar de tema (Light / Dark / Auto) -->
-  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-      <svg class="bi my-1 theme-icon-active" aria-hidden="true">
-        <use href="#circle-half"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-          aria-pressed="false">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#sun-fill"></use>
-          </svg>
-          Light
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-          aria-pressed="false">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Dark
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
-          aria-pressed="true">
-          <svg class="bi me-2 opacity-50" aria-hidden="true">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-          <svg class="bi ms-auto d-none" aria-hidden="true">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </div>
+  <!-- =========================================================================
+       1. BARRA DE NAVEGACIÓN (NAVBAR)
+       ========================================================================= -->
+  <header>
+    <nav class="navbar navbar-expand-lg kmkc-navbar">
+      <div class="container">
+        <!-- Logo Oficial KMKCStats en el Header -->
+        <a class="kmkc-brand py-0" href="index.html">
+          <img src="assets/img/KMKCheader.png" alt="KMKCStats" class="kmkc-header-logo">
+        </a>
 
-  <!-- Contenedor Principal Cover -->
-  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="mb-auto">
-      <div>
-        <h3 class="float-md-start mb-0">Cover</h3>
-        <nav class="nav nav-masthead justify-content-center float-md-end">
-          <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Home</a>
-          <a class="nav-link fw-bold py-1 px-0" href="#">Features</a>
-          <a class="nav-link fw-bold py-1 px-0" href="#">Contact</a>
-        </nav>
+        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="bi bi-list fs-2"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <!-- Enlaces de navegación centrales en español -->
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="#leaderboards">
+                <i class="bi bi-trophy text-warning"></i> Clasificaciones
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="#decks">
+                <i class="bi bi-intersect text-danger"></i> Mazos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="#features">
+                <i class="bi bi-incognito text-info"></i> Espía
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="#" data-bs-toggle="modal" data-bs-target="#apiConfigModal">
+                <i class="bi bi-file-earmark-code text-success"></i> API Supercell
+              </a>
+            </li>
+          </ul>
+
+          <!-- Acciones en el lateral derecho -->
+          <div class="d-flex align-items-center gap-3">
+            <span id="api-status-badge" class="badge bg-secondary">
+              <i class="bi bi-database me-1"></i> Modo Mock Data
+            </span>
+            <button class="btn btn-upgrade" data-bs-toggle="modal" data-bs-target="#apiConfigModal">
+              Mejorar
+            </button>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
+              <i class="bi bi-discord"></i>
+            </a>
+          </div>
+        </div>
       </div>
-    </header>
+    </nav>
+  </header>
 
-    <main class="px-3">
-      <h1>Cover your page.</h1>
-      <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the
-        text, and add your own fullscreen background photo to make it your own.</p>
-      <p class="lead">
-        <a href="#" class="btn btn-lg btn-light fw-bold border-white bg-white">Learn more</a>
-      </p>
-    </main>
+  <!-- =========================================================================
+       2. CONTENIDO PRINCIPAL
+       ========================================================================= -->
+  <main>
+    <!-- SECCIÓN HERO (RÉPLICA CWSTATS EN ESPAÑOL) -->
+    <section class="hero-glow-bg text-center py-5">
+      <div class="container py-lg-5">
+        <!-- Título Principal -->
+        <h1 class="hero-title text-white mb-2">
+          La fuente de confianza para<br>
+          todo sobre <span class="gradient-text-clanwars">Clan Wars</span>
+        </h1>
 
-    <footer class="mt-auto text-white-50">
-      <p>
-        Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a
-          href="https://x.com/mdo" class="text-white">@mdo</a>.
-      </p>
-    </footer>
+        <!-- Subtítulo -->
+        <p class="hero-subtitle">
+          Analítica avanzada de Clan Wars 2 para el seguimiento de jugadores, clanes, récords, carreras y rendimiento.
+        </p>
+
+        <!-- BUSCADOR CON PESTAÑAS (CLANES / JUGADORES) -->
+        <div class="search-container">
+          <!-- Selector de Pestañas -->
+          <div class="search-tabs">
+            <button id="tab-clans" class="search-tab-btn active" type="button">Clanes</button>
+            <button id="tab-players" class="search-tab-btn" type="button">Jugadores</button>
+          </div>
+
+          <!-- Caja de Entrada -->
+          <form id="search-form" class="mb-3">
+            <div class="search-input-box">
+              <i class="bi bi-search search-icon"></i>
+              <input type="text" id="search-input" placeholder="Buscar clanes por nombre o tag (ej. #9PJ99 o #2PP)"
+                autocomplete="off" required>
+              <button type="submit" class="search-submit-btn">Buscar</button>
+            </div>
+          </form>
+
+          <!-- Sugerencias Rápidas para probar con un clic -->
+          <div class="quick-tags mb-4">
+            <span class="text-muted small me-2">Tags populares:</span>
+            <a href="#" class="quick-tag-chip" data-tag="#9PJ99" data-type="clans">🧀 Team Queso (#9PJ99)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#2PP" data-type="clans">⭐ Nova I Elites (#2PP)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#22GCR" data-type="clans">⚡ KMKC Esports (#22GCR)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#98VCGY" data-type="players">👑 Mohamed Light (#98VCGY)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#2PP9CL" data-type="players">🎮 Marcos_KMKC (#2PP9CL)</a>
+          </div>
+
+          <!-- Texto de soporte y Botón de Discord -->
+          <p class="text-muted small mb-3">
+            Inicia sesión para tener tus clanes y jugadores favoritos siempre a mano.
+          </p>
+          <div>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="btn-discord">
+              <i class="bi bi-discord fs-5"></i> Continuar con Discord
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE RESULTADOS DINÁMICOS (OCULTA POR DEFECTO HASTA QUE SE BUSCA) -->
+    <section id="results-section" class="py-5 d-none">
+      <div class="container">
+        <div id="results-content">
+          <!-- Inyectado dinámicamente vía js/ui.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN EXPLORE KMKCSTATS: LEADERBOARDS & META -->
+    <section id="leaderboards" class="py-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div>
+            <span class="text-uppercase fw-bold small text-danger">Rankings Oficiales</span>
+            <h2 class="fw-bold text-white mb-0">🏆 Top Clanes de Clan Wars 2</h2>
+          </div>
+          <small class="text-muted">Actualizado en tiempo real</small>
+        </div>
+
+        <div class="kmkc-card p-3 p-md-4 mb-5">
+          <div class="table-responsive">
+            <table class="table kmkc-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Clan</th>
+                  <th>Copas de Guerra</th>
+                  <th>Puntuación</th>
+                  <th>Región</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-tbody">
+                <!-- Rellenado por js/ui.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MAZOS META DE GUERRA (DECKS) -->
+        <div id="decks" class="pt-4">
+          <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+              <span class="text-uppercase fw-bold small text-warning">Estrategia de Victoria</span>
+              <h2 class="fw-bold text-white mb-0">⚔️ Mazos Meta de Clan Wars 2</h2>
+            </div>
+            <span class="badge bg-dark border border-secondary text-secondary">Liga Legendaria</span>
+          </div>
+
+          <div id="meta-decks-container" class="row g-4">
+            <!-- Rellenado por js/ui.js -->
+          </div>
+        </div>
+
+        <!-- CARACTERÍSTICAS Y SPY TOOL -->
+        <div id="features" class="pt-5 mt-4">
+          <div class="text-center mb-5">
+            <span class="text-uppercase fw-bold small text-info">Herramientas Avanzadas</span>
+            <h2 class="fw-bold text-white">¿Por qué usar KMKCStats?</h2>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="kmkc-card p-4 h-100 text-center">
+                <div class="fs-1 text-warning mb-3">⛵</div>
+                <h5 class="fw-bold text-white">River Race Live Tracker</h5>
+                <p class="text-muted small mb-0">
+                  Calcula con precisión las medallas que faltan para cruzar la meta y el rendimiento de ataques a barcos enemigos en cada semana de guerra.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="kmkc-card p-4 h-100 text-center">
+                <div class="fs-1 text-info mb-3">🕵️</div>
+                <h5 class="fw-bold text-white">Enemy Clan Spy</h5>
+                <p class="text-muted small mb-0">
+                  Inspecciona a los clanes rivales de tu grupo de guerra, detecta qué jugadores no han gastado sus 4 ataques y optimiza tus defensas.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="kmkc-card p-4 h-100 text-center">
+                <div class="fs-1 text-danger mb-3">📊</div>
+                <h5 class="fw-bold text-white">Winrate & Deck Synergy</h5>
+                <p class="text-muted small mb-0">
+                  Monitorea los 4 mazos de cada miembro para evitar cartas repetidas y garantizar el 100% de victorias en los duelos al mejor de 3.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       3. MODAL: CONFIGURACIÓN DE LA API DE SUPERCELL
+       ========================================================================= -->
+  <div class="modal fade" id="apiConfigModal" tabindex="-1" aria-labelledby="apiConfigModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content kmkc-modal">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold text-white" id="apiConfigModalLabel">
+            <i class="bi bi-key-fill text-warning me-2"></i> Configuración API de Supercell
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="api-config-form">
+          <div class="modal-body">
+            <p class="text-muted small">
+              Para conectar con la API oficial de Clash Royale, regístrate en <a href="https://developer.clashroyale.com" target="_blank" class="text-info">developer.clashroyale.com</a> y crea una clave asignada a tu IP pública.
+            </p>
+
+            <div class="mb-3">
+              <label for="api-token-input" class="form-label text-secondary small fw-bold text-uppercase">Supercell Bearer Token</label>
+              <textarea id="api-token-input" class="form-control kmkc-input font-monospace small" rows="3" placeholder="Pega aquí tu API Key de Supercell..."></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="api-proxy-input" class="form-label text-secondary small fw-bold text-uppercase">Proxy URL (CORS Bypass)</label>
+              <input type="url" id="api-proxy-input" class="form-control kmkc-input font-monospace small" placeholder="https://proxy.royaleapi.dev/v1 o tu proxy local">
+              <small class="text-muted d-block mt-1">
+                Necesario porque los navegadores bloquean llamadas directas a Supercell por CORS. Si no tienes proxy, déjalo vacío y la web usará los datos Mock integrados.
+              </small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-upgrade">Guardar Configuración</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
-  <!-- Bootstrap 5 JS Bundle Local -->
+  <!-- =========================================================================
+       4. PIE DE PÁGINA (FOOTER)
+       ========================================================================= -->
+  <footer class="kmkc-footer">
+    <div class="container text-center">
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+        <img src="assets/img/KMKCicon.png" alt="KMKC Logo" style="height: 28px; width: auto; border-radius: 6px; filter: drop-shadow(0 2px 6px rgba(255, 51, 102, 0.4));">
+        <strong class="text-white">KMKCStats</strong>
+      </div>
+      <p class="text-secondary small mb-2">
+        Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> para la asignatura DWEF (2º DAW).
+      </p>
+      <p class="text-muted" style="font-size: 0.75rem; max-width: 680px; margin: 0 auto;">
+        Este material no es oficial y no está respaldado por Supercell. Para más información, consulta la Política de contenido para fans de Supercell: <a href="https://supercell.com/en/fan-content-policy/" target="_blank" class="text-secondary">supercell.com/en/fan-content-policy/</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle Local (incluye Popper) -->
   <script src="lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Módulos de KMKCStats -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>

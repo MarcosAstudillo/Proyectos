@@ -1,0 +1,499 @@
+/* ==========================================================================
+   KMKCStats - Clan Wars 2 Analytics & Tracker
+   Inspirado en la interfaz y diseño oscuro de CWStats
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --kmkc-bg-dark: #08090d;
+  --kmkc-bg-card: #11141d;
+  --kmkc-bg-card-hover: #171b27;
+  --kmkc-bg-input: #131722;
+  --kmkc-border: rgba(255, 255, 255, 0.08);
+  --kmkc-border-focus: rgba(255, 75, 139, 0.5);
+
+  --kmkc-primary-gradient: linear-gradient(90deg, #ff7a00 0%, #ff007a 100%);
+  --kmkc-accent-pink: #ff3366;
+  --kmkc-accent-pink-hover: #e62858;
+  --kmkc-accent-orange: #ff7a00;
+  --kmkc-discord: #5865f2;
+  --kmkc-discord-hover: #4752c4;
+
+  --kmkc-text-primary: #ffffff;
+  --kmkc-text-secondary: #94a3b8;
+  --kmkc-text-muted: #64748b;
+  
+  --kmkc-glow: rgba(255, 0, 122, 0.15);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--kmkc-bg-dark);
+  color: var(--kmkc-text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Efectos de Fondo (Glow ambiental)
+   ========================================================================== */
+.hero-glow-bg {
+  position: relative;
+  background: radial-gradient(circle at 50% -10%, rgba(255, 80, 130, 0.12) 0%, rgba(255, 122, 0, 0.04) 40%, transparent 70%);
+}
+
+/* ==========================================================================
+   Barra de Navegación
+   ========================================================================== */
+.kmkc-navbar {
+  background-color: rgba(8, 9, 13, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--kmkc-border);
+  padding: 0.85rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.kmkc-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+
+.kmkc-logo-badge {
+  background: var(--kmkc-primary-gradient);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(255, 0, 122, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kmkc-logo-img {
+  height: 42px;
+  width: auto;
+  max-width: 50px;
+  object-fit: contain;
+  border-radius: 10px;
+  filter: drop-shadow(0 2px 10px rgba(255, 51, 102, 0.35));
+  transition: transform 0.2s ease;
+}
+
+.kmkc-header-logo {
+  height: 50px;
+  max-height: 54px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 15px rgba(255, 0, 122, 0.3));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .kmkc-header-logo {
+    height: 40px;
+  }
+}
+
+.kmkc-brand:hover .kmkc-header-logo {
+  transform: scale(1.04);
+  filter: drop-shadow(0 6px 20px rgba(255, 0, 122, 0.5));
+}
+
+.kmkc-brand-name {
+  color: #ffffff;
+}
+
+.kmkc-brand-name span {
+  background: var(--kmkc-primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.kmkc-nav-link {
+  color: var(--kmkc-text-secondary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.kmkc-nav-link:hover,
+.kmkc-nav-link.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-upgrade {
+  background: var(--kmkc-primary-gradient);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 14px rgba(255, 0, 122, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-upgrade:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 122, 0.45);
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+}
+
+.gradient-text-clanwars {
+  background: var(--kmkc-primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  color: var(--kmkc-text-secondary);
+  font-size: 1.15rem;
+  max-width: 680px;
+  margin: 1.25rem auto 2.5rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Buscador CWStats (Pestañas y Campo de búsqueda)
+   ========================================================================== */
+.search-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.search-tabs {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  padding: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--kmkc-border);
+}
+
+.search-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--kmkc-text-secondary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.4rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-tab-btn.active {
+  background: var(--kmkc-accent-pink);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(255, 51, 102, 0.35);
+}
+
+.search-input-box {
+  position: relative;
+  background-color: var(--kmkc-bg-input);
+  border: 1px solid var(--kmkc-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.5rem 0.4rem 1.2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input-box:focus-within {
+  border-color: var(--kmkc-accent-pink);
+  box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.2), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.search-input-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 1.05rem;
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+}
+
+.search-input-box input::placeholder {
+  color: #4b5563;
+}
+
+.search-icon {
+  color: var(--kmkc-text-muted);
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.search-submit-btn {
+  background: var(--kmkc-primary-gradient);
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 9px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.search-submit-btn:hover {
+  opacity: 0.92;
+}
+
+.quick-tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quick-tag-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--kmkc-border);
+  color: var(--kmkc-text-secondary);
+  font-size: 0.78rem;
+  font-family: monospace;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.quick-tag-chip:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-discord {
+  background-color: var(--kmkc-discord);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-discord:hover {
+  background-color: var(--kmkc-discord-hover);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Tarjetas de Estadísticas y Resultados
+   ========================================================================== */
+.kmkc-card {
+  background-color: var(--kmkc-bg-card);
+  border: 1px solid var(--kmkc-border);
+  border-radius: 16px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kmkc-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--kmkc-border);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.stat-label {
+  color: var(--kmkc-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.2rem;
+}
+
+/* Barra de progreso de River Race */
+.race-progress-bar {
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.race-progress-fill {
+  height: 100%;
+  background: var(--kmkc-primary-gradient);
+  border-radius: 50px;
+  transition: width 0.6s ease;
+}
+
+/* Tablas de guerra */
+.kmkc-table {
+  color: var(--kmkc-text-secondary);
+}
+
+.kmkc-table th {
+  color: var(--kmkc-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--kmkc-border);
+  padding: 0.75rem 1rem;
+}
+
+.kmkc-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: middle;
+}
+
+.kmkc-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.025);
+  color: #ffffff;
+}
+
+/* Cartas de Clash Royale (Decks) */
+.deck-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.cr-card-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1e2230;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease;
+  aspect-ratio: 1 / 1.25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.35rem;
+}
+
+.cr-card-item:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--kmkc-accent-pink);
+  z-index: 2;
+}
+
+.cr-card-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-top: 0.25rem;
+}
+
+.cr-card-elixir {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: #a824db;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Modal de API */
+.modal-content.kmkc-modal {
+  background-color: var(--kmkc-bg-card);
+  border: 1px solid var(--kmkc-border);
+  color: var(--kmkc-text-primary);
+  border-radius: 16px;
+}
+
+.modal-content.kmkc-modal .modal-header,
+.modal-content.kmkc-modal .modal-footer {
+  border-color: var(--kmkc-border);
+}
+
+.form-control.kmkc-input {
+  background-color: var(--kmkc-bg-input);
+  border: 1px solid var(--kmkc-border);
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.form-control.kmkc-input:focus {
+  background-color: var(--kmkc-bg-input);
+  border-color: var(--kmkc-accent-pink);
+  box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.2);
+  color: #ffffff;
+}
+
+/* Footer */
+.kmkc-footer {
+  background-color: #050608;
+  border-top: 1px solid var(--kmkc-border);
+  padding: 2.5rem 0;
+  margin-top: auto;
+}
