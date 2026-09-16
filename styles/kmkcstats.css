@@ -330,6 +330,150 @@ body {
   transform: translateY(-2px);
 }
 
+/* Botones de Login Social (Google, GitHub, Twitch, Supercell) */
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-social::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.2s ease;
+}
+
+.btn-social:hover::after {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-social:hover {
+  transform: translateY(-2px);
+}
+
+/* Google */
+.btn-google {
+  background-color: #ffffff;
+  color: #3c4043;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.btn-google:hover {
+  background-color: #f5f5f5;
+  color: #1f1f1f;
+  box-shadow: 0 4px 18px rgba(66, 133, 244, 0.25);
+}
+
+/* GitHub */
+.btn-github {
+  background-color: #24292e;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-github:hover {
+  background-color: #1a1f23;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.15);
+}
+
+/* Twitch */
+.btn-twitch {
+  background-color: #9146ff;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.btn-twitch:hover {
+  background-color: #7c2fff;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(145, 70, 255, 0.4);
+}
+
+/* Supercell */
+.btn-supercell {
+  background: linear-gradient(135deg, #1a1f2e 0%, #252d42 100%);
+  color: #ffffff;
+  border-color: rgba(0, 163, 255, 0.25);
+}
+
+.btn-supercell:hover {
+  border-color: rgba(0, 163, 255, 0.5);
+  box-shadow: 0 4px 18px rgba(0, 163, 255, 0.25);
+  color: #ffffff;
+}
+
+.btn-supercell .supercell-badge {
+  font-size: 0.75rem;
+  background: rgba(0, 163, 255, 0.15);
+  border: 1px solid rgba(0, 163, 255, 0.3);
+  color: #00a3ff;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+/* Grilla de botones sociales 2 columnas */
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+@media (max-width: 420px) {
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Separador OU */
+.divider-or {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--kmkc-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 1.25rem 0;
+}
+
+.divider-or hr {
+  flex-grow: 1;
+  border-color: rgba(255, 255, 255, 0.07);
+  margin: 0;
+}
+
+/* Nota informativa Supercell */
+.supercell-note {
+  background: rgba(0, 163, 255, 0.05);
+  border: 1px solid rgba(0, 163, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.78rem;
+  color: rgba(0, 163, 255, 0.8);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
 /* ==========================================================================
    Tarjetas de Estadísticas y Resultados
    ========================================================================== */

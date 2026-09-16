@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KMKCStats - Registro e Inicio de Sesión. Conéctate con Discord o vincula tu Tag de Clash Royale.">
+  <meta name="description"
+    content="KMKCStats - Registro e Inicio de Sesión. Conéctate con Discord o vincula tu Tag de Clash Royale.">
   <meta name="author" content="Marcos Astudillo Bermúdez">
   <title>Acceso y Registro · KMKCStats</title>
 
@@ -65,7 +66,8 @@
             <a href="auth.html" class="btn btn-outline-light btn-sm active fw-bold">
               <i class="bi bi-person-fill me-1"></i> Mi Cuenta
             </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+              class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
               <i class="bi bi-discord"></i>
             </a>
           </div>
@@ -84,33 +86,95 @@
       <div class="auth-card p-4 p-md-5">
         <div class="text-center mb-4">
           <div class="mb-2">
-            <img src="../assets/img/KMKCicon.png" alt="KMKC Logo" style="height: 52px; width: auto; border-radius: 12px; filter: drop-shadow(0 4px 10px rgba(255, 51, 102, 0.4));">
+            <img src="../assets/img/KMKCheader.png" alt="KMKC Logo"
+              style="height: 52px; width: auto; border-radius: 12px; filter: drop-shadow(0 4px 10px rgba(255, 51, 102, 0.4));">
           </div>
           <h2 class="fw-bold text-white mb-1">Bienvenido a KMKCStats</h2>
           <p class="text-muted small">Accede a tus estadísticas, alertas de clan y mazos guardados</p>
         </div>
 
-        <!-- Botón Principal: Discord -->
-        <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="btn-discord w-100 justify-content-center py-2 mb-4 shadow">
-          <i class="bi bi-discord fs-4"></i> Continuar con Discord
+        <!-- Botón Principal: Discord (Preferido) -->
+        <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+          class="btn-discord w-100 justify-content-center py-2 mb-3 shadow">
+          <i class="bi bi-discord fs-5"></i> Continuar con Discord
+          <span class="ms-auto badge bg-white bg-opacity-25 text-white" style="font-size:0.7rem;">Recomendado</span>
         </a>
 
         <!-- Separador -->
-        <div class="d-flex align-items-center my-3 text-muted small">
-          <hr class="flex-grow-1 border-secondary border-opacity-25">
-          <span class="px-3">o con tu cuenta</span>
-          <hr class="flex-grow-1 border-secondary border-opacity-25">
+        <div class="divider-or">
+          <hr>
+          <span>o inicia con</span>
+          <hr>
+        </div>
+
+        <!-- Botones de Login Social: Google + GitHub -->
+        <div class="social-grid mb-2">
+          <a href="#" class="btn-social btn-google" id="btn-login-google"
+            title="Iniciar sesión con Google">
+            <!-- Logo Google SVG -->
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </a>
+
+          <a href="#" class="btn-social btn-github" id="btn-login-github"
+            title="Iniciar sesión con GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
+
+        <!-- Botones de Login Social: Twitch + Supercell -->
+        <div class="social-grid mb-3">
+          <a href="#" class="btn-social btn-twitch" id="btn-login-twitch"
+            title="Iniciar sesión con Twitch">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/>
+            </svg>
+            Twitch
+          </a>
+
+          <a href="#" class="btn-social btn-supercell" id="btn-login-supercell"
+            title="Iniciar sesión con cuenta Supercell">
+            <svg width="18" height="18" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="#00a3ff">
+              <path d="M32 4C16.536 4 4 16.536 4 32s12.536 28 28 28 28-12.536 28-28S47.464 4 32 4zm0 6c12.15 0 22 9.85 22 22S44.15 54 32 54 10 44.15 10 32 19.85 10 32 10zm-6 10v24h4V28h4v16h4V20H26z"/>
+            </svg>
+            Supercell
+            <span class="supercell-badge">CR</span>
+          </a>
+        </div>
+
+        <!-- Nota informativa Supercell -->
+        <div class="supercell-note mb-3">
+          <i class="bi bi-info-circle-fill flex-shrink-0 mt-1" style="color:#00a3ff;"></i>
+          <span>Iniciar con <strong>Supercell ID</strong> vincula automáticamente tu cuenta de Clash Royale y tu Tag de jugador.</span>
+        </div>
+
+        <!-- Separador hacia formulario email -->
+        <div class="divider-or">
+          <hr>
+          <span>o con email</span>
+          <hr>
         </div>
 
         <!-- Pestañas de Login / Registro -->
-        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-dark rounded-3 border border-secondary border-opacity-25" id="authTab" role="tablist">
+        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-dark rounded-3 border border-secondary border-opacity-25"
+          id="authTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active fw-bold text-white" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-panel" type="button" role="tab">
+            <button class="nav-link active fw-bold text-white" id="login-tab" data-bs-toggle="pill"
+              data-bs-target="#login-panel" type="button" role="tab">
               Iniciar Sesión
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link fw-bold text-white" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-panel" type="button" role="tab">
+            <button class="nav-link fw-bold text-white" id="register-tab" data-bs-toggle="pill"
+              data-bs-target="#register-panel" type="button" role="tab">
               Crear Cuenta
             </button>
           </li>
@@ -123,21 +187,27 @@
           <div class="tab-pane fade show active" id="login-panel" role="tabpanel">
             <form id="login-form">
               <div class="mb-3">
-                <label for="login-email" class="form-label text-secondary small fw-bold text-uppercase">Email o Tag de Jugador</label>
+                <label for="login-email" class="form-label text-secondary small fw-bold text-uppercase">Email o Tag de
+                  Jugador</label>
                 <div class="input-group">
-                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i class="bi bi-person"></i></span>
-                  <input type="text" id="login-email" class="form-control kmkc-input" placeholder="usuario@email.com o #TAG" required>
+                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i
+                      class="bi bi-person"></i></span>
+                  <input type="text" id="login-email" class="form-control kmkc-input"
+                    placeholder="usuario@email.com o #TAG" required>
                 </div>
               </div>
 
               <div class="mb-3">
                 <div class="d-flex justify-content-between">
-                  <label for="login-password" class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
+                  <label for="login-password"
+                    class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
                   <a href="#" class="small text-muted text-decoration-none">¿Olvidaste tu clave?</a>
                 </div>
                 <div class="input-group">
-                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i class="bi bi-lock"></i></span>
-                  <input type="password" id="login-password" class="form-control kmkc-input" placeholder="••••••••" required>
+                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i
+                      class="bi bi-lock"></i></span>
+                  <input type="password" id="login-password" class="form-control kmkc-input" placeholder="••••••••"
+                    required>
                 </div>
               </div>
 
@@ -158,24 +228,32 @@
           <div class="tab-pane fade" id="register-panel" role="tabpanel">
             <form id="register-form">
               <div class="mb-3">
-                <label for="reg-username" class="form-label text-secondary small fw-bold text-uppercase">Nombre de Usuario</label>
-                <input type="text" id="reg-username" class="form-control kmkc-input" placeholder="Tu apodo o nick" required>
+                <label for="reg-username" class="form-label text-secondary small fw-bold text-uppercase">Nombre de
+                  Usuario</label>
+                <input type="text" id="reg-username" class="form-control kmkc-input" placeholder="Tu apodo o nick"
+                  required>
               </div>
 
               <div class="mb-3">
-                <label for="reg-email" class="form-label text-secondary small fw-bold text-uppercase">Correo Electrónico</label>
+                <label for="reg-email" class="form-label text-secondary small fw-bold text-uppercase">Correo
+                  Electrónico</label>
                 <input type="email" id="reg-email" class="form-control kmkc-input" placeholder="tu@correo.com" required>
               </div>
 
               <div class="mb-3">
-                <label for="reg-tag" class="form-label text-secondary small fw-bold text-uppercase">Tag de Clash Royale (#TAG)</label>
-                <input type="text" id="reg-tag" class="form-control kmkc-input font-monospace" placeholder="ej. #2PP9CL" required>
-                <small class="text-muted d-block mt-1">Lo usamos para vincular tu nivel de cartas y alertas de clan automáticamente.</small>
+                <label for="reg-tag" class="form-label text-secondary small fw-bold text-uppercase">Tag de Clash Royale
+                  (#TAG)</label>
+                <input type="text" id="reg-tag" class="form-control kmkc-input font-monospace" placeholder="ej. #2PP9CL"
+                  required>
+                <small class="text-muted d-block mt-1">Lo usamos para vincular tu nivel de cartas y alertas de clan
+                  automáticamente.</small>
               </div>
 
               <div class="mb-3">
-                <label for="reg-password" class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
-                <input type="password" id="reg-password" class="form-control kmkc-input" placeholder="Mínimo 6 caracteres" required>
+                <label for="reg-password"
+                  class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
+                <input type="password" id="reg-password" class="form-control kmkc-input"
+                  placeholder="Mínimo 6 caracteres" required>
               </div>
 
               <div class="form-check mb-4">
