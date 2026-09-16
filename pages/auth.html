@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KMKCStats - Registro e Inicio de Sesión. Conéctate con Discord o vincula tu Tag de Clash Royale.">
+  <meta name="author" content="Marcos Astudillo Bermúdez">
+  <title>Acceso y Registro · KMKCStats</title>
+
+  <!-- Bootstrap 5 CSS Local -->
+  <link rel="stylesheet" href="../lib/bootstrap-5.3.8-dist/css/bootstrap.min.css">
+
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Estilos Exclusivos KMKCStats -->
+  <link rel="stylesheet" href="../styles/kmkcstats.css">
+</head>
+
+<body>
+
+  <!-- =========================================================================
+       1. BARRA DE NAVEGACIÓN
+       ========================================================================= -->
+  <header>
+    <nav class="navbar navbar-expand-lg kmkc-navbar">
+      <div class="container">
+        <!-- Logo KMKCStats Oficial -->
+        <a class="kmkc-brand py-0" href="../index.html">
+          <img src="../assets/img/KMKCheader.png" alt="KMKCStats" class="kmkc-header-logo">
+        </a>
+
+        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="bi bi-list fs-2"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="../index.html">
+                <i class="bi bi-house-door text-secondary"></i> Inicio
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="analisis-guerra.html">
+                <i class="bi bi-water text-primary"></i> Análisis Guerra
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="espionaje.html">
+                <i class="bi bi-incognito text-info"></i> Espionaje
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="creador-sets.html">
+                <i class="bi bi-intersect text-danger"></i> Creador Sets
+              </a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3">
+            <a href="auth.html" class="btn btn-outline-light btn-sm active fw-bold">
+              <i class="bi bi-person-fill me-1"></i> Mi Cuenta
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
+              <i class="bi bi-discord"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       2. CONTENIDO PRINCIPAL (AUTENTICACIÓN)
+       ========================================================================= -->
+  <main class="py-5">
+    <div class="container">
+
+      <!-- Tarjeta de Registro / Login -->
+      <div class="auth-card p-4 p-md-5">
+        <div class="text-center mb-4">
+          <div class="mb-2">
+            <img src="../assets/img/KMKCicon.png" alt="KMKC Logo" style="height: 52px; width: auto; border-radius: 12px; filter: drop-shadow(0 4px 10px rgba(255, 51, 102, 0.4));">
+          </div>
+          <h2 class="fw-bold text-white mb-1">Bienvenido a KMKCStats</h2>
+          <p class="text-muted small">Accede a tus estadísticas, alertas de clan y mazos guardados</p>
+        </div>
+
+        <!-- Botón Principal: Discord -->
+        <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="btn-discord w-100 justify-content-center py-2 mb-4 shadow">
+          <i class="bi bi-discord fs-4"></i> Continuar con Discord
+        </a>
+
+        <!-- Separador -->
+        <div class="d-flex align-items-center my-3 text-muted small">
+          <hr class="flex-grow-1 border-secondary border-opacity-25">
+          <span class="px-3">o con tu cuenta</span>
+          <hr class="flex-grow-1 border-secondary border-opacity-25">
+        </div>
+
+        <!-- Pestañas de Login / Registro -->
+        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-dark rounded-3 border border-secondary border-opacity-25" id="authTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold text-white" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-panel" type="button" role="tab">
+              Iniciar Sesión
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold text-white" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-panel" type="button" role="tab">
+              Crear Cuenta
+            </button>
+          </li>
+        </ul>
+
+        <!-- Contenido de las Pestañas -->
+        <div class="tab-content" id="authTabContent">
+
+          <!-- FORMULARIO 1: INICIAR SESIÓN -->
+          <div class="tab-pane fade show active" id="login-panel" role="tabpanel">
+            <form id="login-form">
+              <div class="mb-3">
+                <label for="login-email" class="form-label text-secondary small fw-bold text-uppercase">Email o Tag de Jugador</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i class="bi bi-person"></i></span>
+                  <input type="text" id="login-email" class="form-control kmkc-input" placeholder="usuario@email.com o #TAG" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <label for="login-password" class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
+                  <a href="#" class="small text-muted text-decoration-none">¿Olvidaste tu clave?</a>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text bg-dark border-secondary border-opacity-25 text-muted"><i class="bi bi-lock"></i></span>
+                  <input type="password" id="login-password" class="form-control kmkc-input" placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="remember-me" checked>
+                <label class="form-check-label text-muted small" for="remember-me">
+                  Mantener la sesión iniciada en este dispositivo
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-upgrade w-100 py-2 fs-6">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+              </button>
+            </form>
+          </div>
+
+          <!-- FORMULARIO 2: REGISTRARSE -->
+          <div class="tab-pane fade" id="register-panel" role="tabpanel">
+            <form id="register-form">
+              <div class="mb-3">
+                <label for="reg-username" class="form-label text-secondary small fw-bold text-uppercase">Nombre de Usuario</label>
+                <input type="text" id="reg-username" class="form-control kmkc-input" placeholder="Tu apodo o nick" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="reg-email" class="form-label text-secondary small fw-bold text-uppercase">Correo Electrónico</label>
+                <input type="email" id="reg-email" class="form-control kmkc-input" placeholder="tu@correo.com" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="reg-tag" class="form-label text-secondary small fw-bold text-uppercase">Tag de Clash Royale (#TAG)</label>
+                <input type="text" id="reg-tag" class="form-control kmkc-input font-monospace" placeholder="ej. #2PP9CL" required>
+                <small class="text-muted d-block mt-1">Lo usamos para vincular tu nivel de cartas y alertas de clan automáticamente.</small>
+              </div>
+
+              <div class="mb-3">
+                <label for="reg-password" class="form-label text-secondary small fw-bold text-uppercase">Contraseña</label>
+                <input type="password" id="reg-password" class="form-control kmkc-input" placeholder="Mínimo 6 caracteres" required>
+              </div>
+
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="accept-terms" required>
+                <label class="form-check-label text-muted small" for="accept-terms">
+                  Acepto los términos de uso y la política de privacidad
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-upgrade w-100 py-2 fs-6">
+                <i class="bi bi-person-plus-fill me-1"></i> Crear mi Cuenta
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       3. PIE DE PÁGINA
+       ========================================================================= -->
+  <footer class="kmkc-footer">
+    <div class="container text-center">
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+        <img src="../assets/img/KMKCheader.png" alt="KMKC Logo" style="height: 28px; width: auto; border-radius: 6px;">
+        <strong class="text-white">KMKCStats</strong>
+      </div>
+      <p class="text-secondary small mb-1">
+        Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> · DWEF (2º DAW).
+      </p>
+      <small class="text-muted">Portal de Autenticación y Perfil de Invocador</small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('login-email').value.trim();
+          localStorage.setItem('kmkc_logged_user', email);
+          alert(`✅ ¡Bienvenido de nuevo, ${email}! Sesión iniciada con éxito.`);
+          window.location.href = '../index.html';
+        });
+      }
+
+      if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const user = document.getElementById('reg-username').value.trim();
+          const tag = document.getElementById('reg-tag').value.trim();
+          localStorage.setItem('kmkc_logged_user', user);
+          localStorage.setItem('kmkc_user_tag', tag);
+          alert(`🎉 ¡Cuenta creada con éxito para ${user} (Tag: ${tag})! Redirigiendo...`);
+          window.location.href = '../index.html';
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

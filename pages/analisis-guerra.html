@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KMKCStats - Análisis y seguimiento diario de Clan Wars 2 (Jueves a Domingo), mazos jugados, pendientes y clanes rivales.">
+  <meta name="author" content="Marcos Astudillo Bermúdez">
+  <title>Análisis de Guerra (CW2) · KMKCStats</title>
+
+  <!-- Bootstrap 5 CSS Local -->
+  <link rel="stylesheet" href="../lib/bootstrap-5.3.8-dist/css/bootstrap.min.css">
+
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Estilos Exclusivos KMKCStats -->
+  <link rel="stylesheet" href="../styles/kmkcstats.css">
+</head>
+
+<body>
+
+  <!-- =========================================================================
+       1. BARRA DE NAVEGACIÓN
+       ========================================================================= -->
+  <header>
+    <nav class="navbar navbar-expand-lg kmkc-navbar">
+      <div class="container">
+        <!-- Logo KMKCStats Oficial -->
+        <a class="kmkc-brand py-0" href="../index.html">
+          <img src="../assets/img/KMKCheader.png" alt="KMKCStats" class="kmkc-header-logo">
+        </a>
+
+        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="bi bi-list fs-2"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="../index.html">
+                <i class="bi bi-house-door text-secondary"></i> Inicio
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link active" href="analisis-guerra.html">
+                <i class="bi bi-water text-primary"></i> Análisis Guerra
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="espionaje.html">
+                <i class="bi bi-incognito text-info"></i> Espionaje
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="creador-sets.html">
+                <i class="bi bi-intersect text-danger"></i> Creador Sets
+              </a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3">
+            <a href="auth.html" class="btn btn-outline-light btn-sm fw-bold">
+              <i class="bi bi-person-fill me-1"></i> Mi Cuenta
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
+              <i class="bi bi-discord"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       2. CONTENIDO PRINCIPAL
+       ========================================================================= -->
+  <main class="py-5">
+    <div class="container">
+      
+      <!-- Título de la Página y Selector de Clan -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+          <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-2">
+            <i class="bi bi-shield-shaded me-1"></i> Monitor de Carrera de Río
+          </span>
+          <h1 class="fw-bold text-white mb-1">Análisis de Guerra (Clan Wars 2)</h1>
+          <p class="text-muted mb-0">Seguimiento de mazos diarios, rendimiento de miembros y clanes rivales</p>
+        </div>
+
+        <!-- Selector Rápido de Clan -->
+        <div class="d-flex align-items-center gap-2 bg-dark p-2 rounded-3 border border-secondary border-opacity-25">
+          <span class="text-muted small fw-bold text-uppercase ms-2">Clan:</span>
+          <select id="clan-select" class="form-select kmkc-input form-select-sm" style="width: auto;">
+            <option value="#22GCR" selected>⚡ KMKC Esports (#22GCR)</option>
+            <option value="#9PJ99">🧀 Team Queso (#9PJ99)</option>
+            <option value="#2PP">⭐ Nova I Elites (#2PP)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Selector de Días de Guerra (Jueves a Domingo) -->
+      <div class="kmkc-card p-3 mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-calendar-week fs-4 text-warning"></i>
+            <div>
+              <strong class="text-white d-block">Días de Batalla Oficiales</strong>
+              <small class="text-muted">Reinicios diarios a las 10:00 UTC (11:00 / 12:00 Madrid)</small>
+            </div>
+          </div>
+
+          <div class="war-day-tabs" id="war-days-container">
+            <button class="war-day-btn" data-day="thursday">Jueves (Día 1)</button>
+            <button class="war-day-btn" data-day="friday">Viernes (Día 2)</button>
+            <button class="war-day-btn active" data-day="saturday">Sábado (Día 3 - Hoy)</button>
+            <button class="war-day-btn" data-day="sunday">Domingo (Día 4 - Coliseo)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Clave del Día Seleccionado -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="stat-box">
+            <div id="metric-decks" class="stat-value text-white">176 / 200</div>
+            <div class="stat-label">Mazos Jugados Hoy</div>
+            <small class="text-success fw-bold">88% Completado</small>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-box">
+            <div id="metric-pending" class="stat-value text-danger">24</div>
+            <div class="stat-label">Mazos por Jugar</div>
+            <small class="text-muted">6 jugadores pendientes</small>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-box">
+            <div id="metric-avg-fame" class="stat-value text-warning">865 🎖️</div>
+            <div class="stat-label">Media Puntuación / Jugador</div>
+            <small class="text-info fw-bold">+12% vs semana previa</small>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-box">
+            <div id="metric-boat-attacks" class="stat-value text-info">7 ⚔️</div>
+            <div class="stat-label">Ataques a Barcos Rival</div>
+            <small class="text-warning">2 defensas destruidas</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparativa en Vivo: Los 5 Clanes del Río -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+          <div class="kmkc-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-white mb-0">⛵ Posiciones de la Carrera de Río</h5>
+              <span class="badge bg-warning text-dark fw-bold">Meta: 50.000 Medallas</span>
+            </div>
+            
+            <p class="text-muted small mb-4">
+              Progreso acumulado durante los días de guerra en el grupo fluvial actual.
+            </p>
+
+            <div id="rival-clans-list">
+              <!-- Clanes rivales inyectados dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel de Alerta y Estado del Barco -->
+        <div class="col-lg-5">
+          <div class="kmkc-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold text-white mb-3">🛡️ Estado del Barco de Clan</h5>
+              <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-secondary small fw-bold">SALUD DEL BARCO</span>
+                  <span class="badge bg-success">100% Blindado</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-success" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <h6 class="text-secondary small fw-bold text-uppercase mb-2">Resumen Táctico:</h6>
+              <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+                <li class="d-flex align-items-center gap-2">
+                  <i class="bi bi-check-circle-fill text-success"></i>
+                  <span>Liderando la carrera con <strong>+3.600</strong> medallas sobre el 2º puesto.</span>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                  <i class="bi bi-shield-check text-info"></i>
+                  <span>Las 3 defensas del barco permanecen intactas.</span>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                  <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                  <span>Faltan 6 miembros por completar sus 4 mazos antes del reinicio.</span>
+                </li>
+              </ul>
+            </div>
+
+            <button id="send-reminder-btn" class="btn btn-upgrade w-100 mt-4 py-2">
+              <i class="bi bi-bell-fill me-2"></i> Notificar a Miembros Pendientes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Miembros del Clan y Auditoría de Mazos -->
+      <div class="kmkc-card p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <h5 class="fw-bold text-white mb-1">👥 Auditoría de Miembros de Guerra</h5>
+            <p class="text-muted small mb-0">Control de mazos jugados hoy y aportación en medallas</p>
+          </div>
+
+          <!-- Filtro de estado de ataques -->
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-light active filter-member-btn" data-filter="all">Todos (50)</button>
+            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="completed">Completos 4/4 (44)</button>
+            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="pending">Pendientes (6)</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table kmkc-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Miembro</th>
+                <th>Rango</th>
+                <th>Mazos Gastados</th>
+                <th>Medallas Hoy</th>
+                <th>Ataques Barco</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="war-members-tbody">
+              <!-- Rellenado con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       3. PIE DE PÁGINA
+       ========================================================================= -->
+  <footer class="kmkc-footer">
+    <div class="container text-center">
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+        <img src="../assets/img/KMKCheader.png" alt="KMKC Logo" style="height: 28px; width: auto; border-radius: 6px;">
+        <strong class="text-white">KMKCStats</strong>
+      </div>
+      <p class="text-secondary small mb-1">
+        Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> · DWEF (2º DAW).
+      </p>
+      <small class="text-muted">Módulo de Análisis Avanzado de Clan Wars 2</small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script>
+    // Lógica específica para la página de Análisis de Guerra
+    document.addEventListener('DOMContentLoaded', () => {
+      const clanSelect = document.getElementById('clan-select');
+      const dayButtons = document.querySelectorAll('.war-day-btn');
+      const rivalClansContainer = document.getElementById('rival-clans-list');
+      const warMembersTbody = document.getElementById('war-members-tbody');
+      const reminderBtn = document.getElementById('send-reminder-btn');
+      const filterButtons = document.querySelectorAll('.filter-member-btn');
+
+      let currentFilter = 'all';
+
+      // Base de datos de miembros simulada para la auditoría de mazos
+      const mockClanMembers = [
+        { name: 'Marcos Astudillo', role: 'Líder', decks: 4, fame: 950, boats: 2, status: 'Completado' },
+        { name: 'Ruben_Pro', role: 'Colíder', decks: 4, fame: 920, boats: 0, status: 'Completado' },
+        { name: 'KMKC_Striker', role: 'Colíder', decks: 4, fame: 890, boats: 1, status: 'Completado' },
+        { name: 'Alex_Ghost', role: 'Veterano', decks: 4, fame: 880, boats: 0, status: 'Completado' },
+        { name: 'Valkyrie_Queen', role: 'Veterano', decks: 4, fame: 860, boats: 0, status: 'Completado' },
+        { name: 'DarkPrince99', role: 'Miembro', decks: 4, fame: 820, boats: 2, status: 'Completado' },
+        { name: 'Sniper_Bowler', role: 'Miembro', decks: 2, fame: 410, boats: 1, status: 'Pendiente' },
+        { name: 'Electro_Mage', role: 'Miembro', decks: 1, fame: 220, boats: 0, status: 'Pendiente' },
+        { name: 'IceGolem_Troll', role: 'Miembro', decks: 0, fame: 0, boats: 0, status: 'Sin Atacar' },
+        { name: 'Firecracker_Fan', role: 'Miembro', decks: 2, fame: 390, boats: 0, status: 'Pendiente' },
+        { name: 'Cannon_Master', role: 'Veterano', decks: 0, fame: 0, boats: 0, status: 'Sin Atacar' },
+        { name: 'Mini_Pekka_Boy', role: 'Miembro', decks: 3, fame: 610, boats: 1, status: 'Pendiente' }
+      ];
+
+      // Datos de clanes rivales
+      const rivalClans = [
+        { rank: 1, name: 'KMKC Esports', tag: '#22GCR', fame: 42100, decks: 176, badge: '⚡', isCurrent: true },
+        { rank: 2, name: 'Furia Roja', tag: '#FR01', fame: 38500, decks: 164, badge: '🔥', isCurrent: false },
+        { rank: 3, name: 'Hispania War', tag: '#HW99', fame: 36200, decks: 152, badge: '⚔️', isCurrent: false },
+        { rank: 4, name: 'Los Titanes', tag: '#LT33', fame: 33100, decks: 140, badge: '🛡️', isCurrent: false },
+        { rank: 5, name: 'Valientes CR', tag: '#VC12', fame: 29800, decks: 128, badge: '👑', isCurrent: false }
+      ];
+
+      // Renderizar clanes rivales
+      const renderRivals = () => {
+        rivalClansContainer.innerHTML = rivalClans.map(clan => {
+          const percent = Math.min(100, Math.round((clan.fame / 50000) * 100));
+          return `
+            <div class="p-3 rounded-3 mb-3 ${clan.isCurrent ? 'bg-primary bg-opacity-10 border border-primary border-opacity-50' : 'bg-dark bg-opacity-50 border border-secondary border-opacity-25'}">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge ${clan.rank === 1 ? 'bg-warning text-dark' : 'bg-secondary'} rounded-pill">#${clan.rank}</span>
+                  <span class="fs-5">${clan.badge}</span>
+                  <strong>${clan.name}</strong>
+                  <small class="text-muted font-monospace">${clan.tag}</small>
+                </div>
+                <div class="text-end">
+                  <span class="fw-bold text-warning">${clan.fame.toLocaleString()} 🎖️</span>
+                  <small class="text-muted d-block">${clan.decks}/200 Mazos</small>
+                </div>
+              </div>
+              <div class="progress" style="height: 6px;">
+                <div class="progress-bar ${clan.isCurrent ? 'bg-danger' : 'bg-warning'}" style="width: ${percent}%;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      };
+
+      // Renderizar tabla de miembros
+      const renderMembers = () => {
+        const filtered = mockClanMembers.filter(m => {
+          if (currentFilter === 'completed') return m.decks === 4;
+          if (currentFilter === 'pending') return m.decks < 4;
+          return true;
+        });
+
+        warMembersTbody.innerHTML = filtered.map(m => `
+          <tr>
+            <td class="fw-bold text-white">${m.name}</td>
+            <td><span class="badge bg-dark border border-secondary text-secondary">${m.role}</span></td>
+            <td>
+              <span class="fw-bold ${m.decks === 4 ? 'text-success' : 'text-danger'}">${m.decks}/4</span>
+            </td>
+            <td class="text-warning fw-bold">${m.fame} 🎖️</td>
+            <td>${m.boats} ⚔️</td>
+            <td>
+              <span class="badge ${m.decks === 4 ? 'bg-success' : m.decks === 0 ? 'bg-danger' : 'bg-warning text-dark'}">
+                ${m.status}
+              </span>
+            </td>
+            <td>
+              ${m.decks < 4 ? `
+                <button class="btn btn-sm btn-outline-warning notify-single-btn" data-name="${m.name}">
+                  <i class="bi bi-chat-dots me-1"></i> Avisar
+                </button>
+              ` : `
+                <span class="text-muted small"><i class="bi bi-check2-all text-success"></i> Al día</span>
+              `}
+            </td>
+          </tr>
+        `).join('');
+      };
+
+      // Manejo de tabs de días
+      dayButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          dayButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      // Filtros de miembros
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          renderMembers();
+        });
+      });
+
+      // Recordatorio a miembros
+      if (reminderBtn) {
+        reminderBtn.addEventListener('click', () => {
+          alert('📢 Notificación enviada a los 6 miembros con mazos pendientes de guerra.');
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        const notifyBtn = e.target.closest('.notify-single-btn');
+        if (notifyBtn) {
+          const name = notifyBtn.dataset.name;
+          alert(`📢 Recordatorio enviado a ${name} para que complete sus mazos de hoy.`);
+        }
+      });
+
+      renderRivals();
+      renderMembers();
+    });
+  </script>
+</body>
+
+</html>

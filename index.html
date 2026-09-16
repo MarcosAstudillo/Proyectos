@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KMKCStats - La fuente de confianza para todo sobre Clan Wars 2 en Clash Royale. Estadísticas y analítica de clanes, jugadores y mazos.">
+  <meta name="description"
+    content="KMKCStats - La fuente de confianza para todo sobre Clan Wars 2 en Clash Royale. Estadísticas y analítica de clanes, jugadores y mazos.">
   <meta name="author" content="Marcos Astudillo Bermúdez">
   <title>KMKCStats · La fuente de confianza para Clan Wars</title>
 
@@ -46,13 +47,18 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="kmkc-nav-link" href="#decks">
-                <i class="bi bi-intersect text-danger"></i> Mazos
+              <a class="kmkc-nav-link" href="pages/analisis-guerra.html">
+                <i class="bi bi-water text-primary"></i> Análisis Guerra
               </a>
             </li>
             <li class="nav-item">
-              <a class="kmkc-nav-link" href="#features">
+              <a class="kmkc-nav-link" href="pages/espionaje.html">
                 <i class="bi bi-incognito text-info"></i> Espía
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="kmkc-nav-link" href="pages/creador-sets.html">
+                <i class="bi bi-intersect text-danger"></i> Creador Sets
               </a>
             </li>
             <li class="nav-item">
@@ -67,10 +73,11 @@
             <span id="api-status-badge" class="badge bg-secondary">
               <i class="bi bi-database me-1"></i> Modo Mock Data
             </span>
-            <button class="btn btn-upgrade" data-bs-toggle="modal" data-bs-target="#apiConfigModal">
-              Mejorar
-            </button>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
+            <a href="pages/auth.html" class="btn btn-upgrade text-white">
+              <i class="bi bi-person-fill me-1"></i> Mi Cuenta
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+              class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
               <i class="bi bi-discord"></i>
             </a>
           </div>
@@ -202,30 +209,46 @@
 
           <div class="row g-4">
             <div class="col-md-4">
-              <div class="kmkc-card p-4 h-100 text-center">
-                <div class="fs-1 text-warning mb-3">⛵</div>
-                <h5 class="fw-bold text-white">River Race Live Tracker</h5>
-                <p class="text-muted small mb-0">
-                  Calcula con precisión las medallas que faltan para cruzar la meta y el rendimiento de ataques a barcos enemigos en cada semana de guerra.
-                </p>
+              <div class="kmkc-card p-4 h-100 text-center d-flex flex-column justify-content-between">
+                <div>
+                  <div class="fs-1 text-warning mb-3">⛵</div>
+                  <h5 class="fw-bold text-white">River Race Live Tracker</h5>
+                  <p class="text-muted small mb-3">
+                    Calcula con precisión las medallas que faltan para cruzar la meta y el rendimiento de ataques a barcos
+                    enemigos en cada semana de guerra.
+                  </p>
+                </div>
+                <a href="pages/analisis-guerra.html" class="btn btn-sm btn-outline-warning w-100">
+                  <i class="bi bi-arrow-right-circle me-1"></i> Ver Análisis de Guerra
+                </a>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="kmkc-card p-4 h-100 text-center">
-                <div class="fs-1 text-info mb-3">🕵️</div>
-                <h5 class="fw-bold text-white">Enemy Clan Spy</h5>
-                <p class="text-muted small mb-0">
-                  Inspecciona a los clanes rivales de tu grupo de guerra, detecta qué jugadores no han gastado sus 4 ataques y optimiza tus defensas.
-                </p>
+              <div class="kmkc-card p-4 h-100 text-center d-flex flex-column justify-content-between">
+                <div>
+                  <div class="fs-1 text-info mb-3">🕵️</div>
+                  <h5 class="fw-bold text-white">Enemy Clan Spy</h5>
+                  <p class="text-muted small mb-3">
+                    Inspecciona a los clanes rivales de tu grupo de guerra, detecta a qué horas juegan en Madrid (UTC +1) y optimiza tus defensas.
+                  </p>
+                </div>
+                <a href="pages/espionaje.html" class="btn btn-sm btn-outline-info w-100">
+                  <i class="bi bi-arrow-right-circle me-1"></i> Ir a Espionaje Táctico
+                </a>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="kmkc-card p-4 h-100 text-center">
-                <div class="fs-1 text-danger mb-3">📊</div>
-                <h5 class="fw-bold text-white">Winrate & Deck Synergy</h5>
-                <p class="text-muted small mb-0">
-                  Monitorea los 4 mazos de cada miembro para evitar cartas repetidas y garantizar el 100% de victorias en los duelos al mejor de 3.
-                </p>
+              <div class="kmkc-card p-4 h-100 text-center d-flex flex-column justify-content-between">
+                <div>
+                  <div class="fs-1 text-danger mb-3">📊</div>
+                  <h5 class="fw-bold text-white">Creador de Sets de Guerra</h5>
+                  <p class="text-muted small mb-3">
+                    Construye tus 4 mazos de guerra sin cartas duplicadas garantizando el máximo nivel según tu cuenta de Clash Royale.
+                  </p>
+                </div>
+                <a href="pages/creador-sets.html" class="btn btn-sm btn-outline-danger w-100">
+                  <i class="bi bi-arrow-right-circle me-1"></i> Abrir Creador de Mazos
+                </a>
               </div>
             </div>
           </div>
@@ -249,19 +272,26 @@
         <form id="api-config-form">
           <div class="modal-body">
             <p class="text-muted small">
-              Para conectar con la API oficial de Clash Royale, regístrate en <a href="https://developer.clashroyale.com" target="_blank" class="text-info">developer.clashroyale.com</a> y crea una clave asignada a tu IP pública.
+              Para conectar con la API oficial de Clash Royale, regístrate en <a
+                href="https://developer.clashroyale.com" target="_blank" class="text-info">developer.clashroyale.com</a>
+              y crea una clave asignada a tu IP pública.
             </p>
 
             <div class="mb-3">
-              <label for="api-token-input" class="form-label text-secondary small fw-bold text-uppercase">Supercell Bearer Token</label>
-              <textarea id="api-token-input" class="form-control kmkc-input font-monospace small" rows="3" placeholder="Pega aquí tu API Key de Supercell..."></textarea>
+              <label for="api-token-input" class="form-label text-secondary small fw-bold text-uppercase">Supercell
+                Bearer Token</label>
+              <textarea id="api-token-input" class="form-control kmkc-input font-monospace small" rows="3"
+                placeholder="Pega aquí tu API Key de Supercell..."></textarea>
             </div>
 
             <div class="mb-3">
-              <label for="api-proxy-input" class="form-label text-secondary small fw-bold text-uppercase">Proxy URL (CORS Bypass)</label>
-              <input type="url" id="api-proxy-input" class="form-control kmkc-input font-monospace small" placeholder="https://proxy.royaleapi.dev/v1 o tu proxy local">
+              <label for="api-proxy-input" class="form-label text-secondary small fw-bold text-uppercase">Proxy URL
+                (CORS Bypass)</label>
+              <input type="url" id="api-proxy-input" class="form-control kmkc-input font-monospace small"
+                placeholder="https://proxy.royaleapi.dev/v1 o tu proxy local">
               <small class="text-muted d-block mt-1">
-                Necesario porque los navegadores bloquean llamadas directas a Supercell por CORS. Si no tienes proxy, déjalo vacío y la web usará los datos Mock integrados.
+                Necesario porque los navegadores bloquean llamadas directas a Supercell por CORS. Si no tienes proxy,
+                déjalo vacío y la web usará los datos Mock integrados.
               </small>
             </div>
           </div>
@@ -280,14 +310,17 @@
   <footer class="kmkc-footer">
     <div class="container text-center">
       <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
-        <img src="assets/img/KMKCicon.png" alt="KMKC Logo" style="height: 28px; width: auto; border-radius: 6px; filter: drop-shadow(0 2px 6px rgba(255, 51, 102, 0.4));">
+        <img src="assets/img/KMKCheader.png" alt="KMKC Logo"
+          style="height: 28px; width: auto; border-radius: 6px; filter: drop-shadow(0 2px 6px rgba(255, 51, 102, 0.4));">
         <strong class="text-white">KMKCStats</strong>
       </div>
       <p class="text-secondary small mb-2">
         Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> para la asignatura DWEF (2º DAW).
       </p>
       <p class="text-muted" style="font-size: 0.75rem; max-width: 680px; margin: 0 auto;">
-        Este material no es oficial y no está respaldado por Supercell. Para más información, consulta la Política de contenido para fans de Supercell: <a href="https://supercell.com/en/fan-content-policy/" target="_blank" class="text-secondary">supercell.com/en/fan-content-policy/</a>.
+        Este material no es oficial y no está respaldado por Supercell. Para más información, consulta la Política de
+        contenido para fans de Supercell: <a href="https://supercell.com/en/fan-content-policy/" target="_blank"
+          class="text-secondary">supercell.com/en/fan-content-policy/</a>.
       </p>
     </div>
   </footer>

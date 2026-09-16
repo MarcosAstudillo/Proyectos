@@ -497,3 +497,145 @@ body {
   padding: 2.5rem 0;
   margin-top: auto;
 }
+
+/* ==========================================================================
+   Estilos específicos de las Subpáginas
+   ========================================================================== */
+
+/* Pestañas de Días de Guerra (Jueves a Domingo) */
+.war-day-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--kmkc-border);
+  overflow-x: auto;
+}
+
+.war-day-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--kmkc-text-secondary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.war-day-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.war-day-btn.active {
+  background: var(--kmkc-primary-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(255, 0, 122, 0.35);
+}
+
+/* Gráfica de actividad horaria (Espionaje UTC +1) */
+.hour-heatmap-container {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  gap: 3px;
+  margin-top: 1rem;
+}
+
+.hour-block {
+  height: 45px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+
+.hour-block:hover {
+  transform: scaleY(1.15);
+  z-index: 2;
+}
+
+.hour-label {
+  font-size: 0.62rem;
+  color: var(--kmkc-text-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Niveles de calor para el horario */
+.heat-0 { background-color: rgba(255, 255, 255, 0.04); }
+.heat-1 { background-color: rgba(255, 122, 0, 0.25); color: #ffb066; }
+.heat-2 { background-color: rgba(255, 122, 0, 0.55); color: #fff; }
+.heat-3 { background-color: rgba(255, 0, 122, 0.75); color: #fff; box-shadow: 0 0 10px rgba(255, 0, 122, 0.4); }
+.heat-4 { background-color: #ff007a; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 122, 0.7); }
+
+/* Creador de Sets de Guerra (Slots de 4 Mazos) */
+.deck-slot-header {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--kmkc-border);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.card-picker-slot {
+  aspect-ratio: 1 / 1.25;
+  background: #151924;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card-picker-slot:hover {
+  border-color: var(--kmkc-accent-pink);
+  background: #1b202e;
+}
+
+.card-picker-slot.card-duplicate {
+  border-color: #dc3545 !important;
+  background: rgba(220, 53, 69, 0.15);
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+}
+
+.card-level-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.card-level-badge.max-level {
+  background: linear-gradient(135deg, #a824db 0%, #ff007a 100%);
+}
+
+/* Tarjeta de Autenticación */
+.auth-card {
+  max-width: 480px;
+  margin: 3rem auto;
+  background: var(--kmkc-bg-card);
+  border: 1px solid var(--kmkc-border);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
