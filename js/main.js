@@ -31,10 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (apiStatusBadge) {
       if (config.hasToken) {
         apiStatusBadge.className = 'badge bg-success text-white';
-        apiStatusBadge.innerHTML = '<i class="bi bi-shield-check me-1"></i> API Token Activo';
+        apiStatusBadge.innerHTML = '<i class="bi bi-shield-check me-1"></i> API Oficial Conectada';
       } else {
-        apiStatusBadge.className = 'badge bg-secondary text-white';
-        apiStatusBadge.innerHTML = '<i class="bi bi-database me-1"></i> Modo Mock Data';
+        apiStatusBadge.className = 'badge bg-warning text-dark';
+        apiStatusBadge.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i> Falta Token API';
       }
     }
   };
@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 'clans') {
       tabClans.classList.add('active');
       tabPlayers.classList.remove('active');
-      searchInput.placeholder = 'Buscar clanes por nombre o tag (ej. #9PJ99 o #2PP)';
+      searchInput.placeholder = 'Buscar clan por Tag oficial (ej. #L9VRJ o #QLRYPY89)';
     } else {
       tabPlayers.classList.add('active');
       tabClans.classList.remove('active');
-      searchInput.placeholder = 'Buscar jugadores por nombre o tag (ej. #98VCGY o #2PP9CL)';
+      searchInput.placeholder = 'Buscar jugador por Tag oficial (ej. #Y0VVRUVPC o #R8CQJ0YV8)';
     }
 
     searchInput.focus();
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (tabClans) tabClans.addEventListener('click', () => setSearchType('clans'));
   if (tabPlayers) tabPlayers.addEventListener('click', () => setSearchType('players'));
 
-  // 3. Ejecución de la búsqueda
+  // 3. Ejecución de la búsqueda (100% API Oficial en vivo)
   const executeSearch = async (tag) => {
     if (!tag) return;
 
@@ -70,17 +70,22 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       if (currentSearchType === 'clans') {
         const result = await SupercellAPI.getClan(tag);
-        if (result.success) {
+        if (result.success && result.data) {
           UIRenderer.renderClan(result.data);
+        } else {
+          UIRenderer.showError(result.error || 'No se encontró el clan en la API oficial de Supercell.');
         }
       } else {
         const result = await SupercellAPI.getPlayer(tag);
-        if (result.success) {
+        if (result.success && result.data) {
           UIRenderer.renderPlayer(result.data);
+        } else {
+          UIRenderer.showError(result.error || 'No se encontró el jugador en la API oficial de Supercell.');
         }
       }
     } catch (err) {
       console.error('Error durante la búsqueda:', err);
+      UIRenderer.showError('Error de conexión al consultar la API de Supercell: ' + err.message);
     }
   };
 
@@ -94,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Clics en sugerencias rápidas de tags (#TAG)
+  // 4. Clics en sugerencias rápidas de tags oficiales (#TAG)
   quickTags.forEach(chip => {
     chip.addEventListener('click', (e) => {
       e.preventDefault();
@@ -134,11 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
         modalInstance.hide();
       }
 
-      alert('✅ Configuración de la API guardada correctamente en localStorage.');
+      // Recargar Leaderboards con la nueva configuración
+      SupercellAPI.getTopClans().then(clans => {
+        UIRenderer.renderLeaderboards(clans);
+      });
+
+      alert('✅ Configuración de la API guardada correctamente.');
     });
   }
 
   // 7. Cargar Leaderboards y Mazos Meta de inicio
-  UIRenderer.renderLeaderboards(SupercellAPI.getTopClans());
+  SupercellAPI.getTopClans().then(clans => {
+    UIRenderer.renderLeaderboards(clans);
+  });
   UIRenderer.renderMetaDecks(SupercellAPI.getMetaDecks());
 });

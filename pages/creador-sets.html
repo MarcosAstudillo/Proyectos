@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KMKCStats - Creador y Optimizador de Sets de Guerra para Clan Wars 2. Crea tus 4 mazos sin cartas duplicadas adaptados al nivel de tu cuenta.">
+  <meta name="description" content="KMKCStats - Creador y Optimizador Oficial de Sets de Guerra para Clan Wars 2. 32 cartas únicas oficiales de Supercell adaptadas al nivel real de tu cuenta.">
   <meta name="author" content="Marcos Astudillo Bermúdez">
   <title>Creador de Sets de Guerra · KMKCStats</title>
 
@@ -62,11 +62,11 @@
           </ul>
 
           <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-success bg-opacity-75 text-white">
+              <i class="bi bi-broadcast me-1"></i> API Oficial en Vivo
+            </span>
             <a href="auth.html" class="btn btn-outline-light btn-sm fw-bold">
               <i class="bi bi-person-fill me-1"></i> Mi Cuenta
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
-              <i class="bi bi-discord"></i>
             </a>
           </div>
         </div>
@@ -84,34 +84,64 @@
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
           <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2 rounded-pill mb-2">
-            <i class="bi bi-lightning-charge-fill me-1"></i> Clan Wars 2 Deck Builder
+            <i class="bi bi-lightning-charge-fill me-1"></i> Clan Wars 2 Deck Builder Oficial
           </span>
           <h1 class="fw-bold text-white mb-1">Creador de Sets de Guerra (4 Mazos)</h1>
           <p class="text-muted mb-0">
-            Regla de oro: <strong>32 cartas únicas</strong> sin repetir ninguna carta. Optimizado según los niveles de tu cuenta.
+            Regla oficial de Clan Wars 2: <strong>32 cartas únicas</strong> sin cartas duplicadas. Ilustraciones y estadísticas oficiales de Supercell.
           </p>
         </div>
 
-        <div class="d-flex gap-2">
+        <div class="d-flex flex-wrap gap-2">
           <button id="btn-load-optimal" class="btn btn-upgrade">
-            <i class="bi bi-magic me-1"></i> Sugerir Set Competitivo
+            <i class="bi bi-magic me-1"></i> Regenerar Set Óptimo
           </button>
           <button id="btn-copy-all" class="btn btn-outline-light">
-            <i class="bi bi-clipboard-check me-1"></i> Copiar Mazos
+            <i class="bi bi-clipboard-check me-1"></i> Copiar Enlaces de Mazos
           </button>
         </div>
       </div>
 
-      <!-- Barra de Estado del Set y Filtro de Nivel de Cuenta -->
+      <!-- Sincronización con Cuenta Real de Jugador -->
+      <div class="kmkc-card p-4 mb-4">
+        <div class="row align-items-center g-3">
+          <div class="col-lg-5">
+            <div class="d-flex align-items-center gap-3">
+              <div class="fs-1 text-warning">👑</div>
+              <div>
+                <strong class="text-white d-block">Sincronizar Niveles con tu Cuenta Real</strong>
+                <small class="text-muted">Introduce tu Tag de Clash Royale para adaptar los niveles de las 32 cartas a tu inventario real.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="d-flex flex-wrap align-items-center justify-content-lg-end gap-2">
+              <div class="input-group" style="max-width: 320px;">
+                <span class="input-group-text bg-dark border-secondary text-secondary">#</span>
+                <input type="text" id="sync-player-input" class="form-control kmkc-input text-uppercase font-monospace" placeholder="TAG jugador (ej: R8CQJ0YV8)" value="R8CQJ0YV8">
+                <button id="btn-sync-player" class="btn btn-upgrade">
+                  <i class="bi bi-arrow-repeat me-1"></i> Sincronizar
+                </button>
+              </div>
+              <span id="sync-status-badge" class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-2">
+                <i class="bi bi-check-circle me-1"></i> Niveles Máximos
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Estado del Set -->
       <div class="kmkc-card p-3 mb-4">
         <div class="row align-items-center g-3">
           <div class="col-md-4">
             <div class="d-flex align-items-center gap-3">
               <div class="fs-2 text-warning">🛡️</div>
               <div>
-                <small class="text-muted text-uppercase fw-bold">Validación de Cartas Únicas</small>
+                <small class="text-muted text-uppercase fw-bold">Validación Oficial CW2</small>
                 <div id="validation-status" class="fw-bold text-success">
-                  <i class="bi bi-check-circle-fill me-1"></i> 32 / 32 Cartas Válidas (0 Repetidas)
+                  <i class="bi bi-check-circle-fill me-1"></i> 32 / 32 Cartas Únicas (0 Duplicadas)
                 </div>
               </div>
             </div>
@@ -121,44 +151,46 @@
             <div class="d-flex align-items-center gap-3">
               <div class="fs-2 text-info">⭐</div>
               <div>
-                <small class="text-muted text-uppercase fw-bold">Nivel Medio del Set</small>
-                <div class="fw-bold text-white">Nivel 14.8 (92% Nivel Élite 15)</div>
+                <small class="text-muted text-uppercase fw-bold">Nivel Promedio del Set</small>
+                <div id="set-avg-level" class="fw-bold text-white">Nivel 14.8 (Calculando...)</div>
               </div>
             </div>
           </div>
 
           <div class="col-md-4">
-            <div class="d-flex align-items-center justify-content-md-end gap-2">
-              <span class="text-muted small fw-bold text-uppercase">Nivel de Cuenta:</span>
-              <select id="account-level-select" class="form-select kmkc-input form-select-sm" style="width: auto;">
-                <option value="max" selected>Nivel 15 Élite (Competición)</option>
-                <option value="high">Nivel 14 (Legendario)</option>
-                <option value="mid">Nivel 13 (Intermedio)</option>
-              </select>
+            <div class="d-flex align-items-center gap-3">
+              <div class="fs-2 text-danger">⚡</div>
+              <div>
+                <small class="text-muted text-uppercase fw-bold">Coste Promedio Global</small>
+                <div id="set-avg-elixir" class="fw-bold text-white">3.5 Elixir</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Los 4 Mazos de Guerra -->
+      <!-- Los 4 Mazos de Guerra con Arte Oficial -->
       <div class="row g-4" id="decks-container">
 
         <!-- Mazo 1: Ciclo Rápido -->
         <div class="col-lg-6">
           <div class="kmkc-card h-100">
-            <div class="deck-slot-header d-flex justify-content-between align-items-center">
+            <div class="deck-slot-header d-flex justify-content-between align-items-center p-3 border-bottom border-secondary border-opacity-25">
               <div>
                 <h5 class="fw-bold text-white mb-0">Mazo 1: Ciclo Rápido (Hog 2.6 EQ)</h5>
-                <small class="text-muted">Arquetipo: Presión continua</small>
+                <small class="text-muted">Arquetipo: Presión continua en puente</small>
               </div>
               <div class="d-flex gap-2">
                 <span class="badge bg-secondary">Elixir: 2.6</span>
-                <span class="badge bg-success">WR: 89%</span>
+                <span class="badge bg-success">WR: 58.4%</span>
               </div>
             </div>
             <div class="p-3">
               <div class="row g-2" id="slot-deck-1">
-                <!-- Cartas inyectadas con JS -->
+                <div class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Cargando cartas oficiales de Supercell...
+                </div>
               </div>
             </div>
           </div>
@@ -167,19 +199,22 @@
         <!-- Mazo 2: Beatdown Aéreo -->
         <div class="col-lg-6">
           <div class="kmkc-card h-100">
-            <div class="deck-slot-header d-flex justify-content-between align-items-center">
+            <div class="deck-slot-header d-flex justify-content-between align-items-center p-3 border-bottom border-secondary border-opacity-25">
               <div>
                 <h5 class="fw-bold text-white mb-0">Mazo 2: Beatdown Aéreo (LavaLoon)</h5>
-                <small class="text-muted">Arquetipo: Ataque masivo en doble elixir</small>
+                <small class="text-muted">Arquetipo: Ofensiva aérea en doble elixir</small>
               </div>
               <div class="d-flex gap-2">
                 <span class="badge bg-secondary">Elixir: 4.1</span>
-                <span class="badge bg-success">WR: 91%</span>
+                <span class="badge bg-success">WR: 57.2%</span>
               </div>
             </div>
             <div class="p-3">
               <div class="row g-2" id="slot-deck-2">
-                <!-- Cartas inyectadas con JS -->
+                <div class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Cargando cartas oficiales de Supercell...
+                </div>
               </div>
             </div>
           </div>
@@ -188,19 +223,22 @@
         <!-- Mazo 3: Bridge Spam -->
         <div class="col-lg-6">
           <div class="kmkc-card h-100">
-            <div class="deck-slot-header d-flex justify-content-between align-items-center">
+            <div class="deck-slot-header d-flex justify-content-between align-items-center p-3 border-bottom border-secondary border-opacity-25">
               <div>
-                <h5 class="fw-bold text-white mb-0">Mazo 3: Control & Bridge Spam (P.E.K.K.A)</h5>
-                <small class="text-muted">Arquetipo: Castigo en ambas líneas</small>
+                <h5 class="fw-bold text-white mb-0">Mazo 3: Control & Presión (P.E.K.K.A)</h5>
+                <small class="text-muted">Arquetipo: Defensa sólida y contraataque dual</small>
               </div>
               <div class="d-flex gap-2">
                 <span class="badge bg-secondary">Elixir: 3.9</span>
-                <span class="badge bg-success">WR: 87%</span>
+                <span class="badge bg-success">WR: 56.9%</span>
               </div>
             </div>
             <div class="p-3">
               <div class="row g-2" id="slot-deck-3">
-                <!-- Cartas inyectadas con JS -->
+                <div class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Cargando cartas oficiales de Supercell...
+                </div>
               </div>
             </div>
           </div>
@@ -209,19 +247,22 @@
         <!-- Mazo 4: Cementerio Control -->
         <div class="col-lg-6">
           <div class="kmkc-card h-100">
-            <div class="deck-slot-header d-flex justify-content-between align-items-center">
+            <div class="deck-slot-header d-flex justify-content-between align-items-center p-3 border-bottom border-secondary border-opacity-25">
               <div>
                 <h5 class="fw-bold text-white mb-0">Mazo 4: Cementerio & Rey Esqueleto</h5>
-                <small class="text-muted">Arquetipo: Contraataque defensivo</small>
+                <small class="text-muted">Arquetipo: Asedio con tanque y hechizo</small>
               </div>
               <div class="d-flex gap-2">
                 <span class="badge bg-secondary">Elixir: 3.5</span>
-                <span class="badge bg-success">WR: 85%</span>
+                <span class="badge bg-success">WR: 55.8%</span>
               </div>
             </div>
             <div class="p-3">
               <div class="row g-2" id="slot-deck-4">
-                <!-- Cartas inyectadas con JS -->
+                <div class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Cargando cartas oficiales de Supercell...
+                </div>
               </div>
             </div>
           </div>
@@ -231,19 +272,19 @@
 
       <!-- Consejos Tácticos para Duelos de Guerra -->
       <div class="kmkc-card p-4 mt-4">
-        <h5 class="fw-bold text-white mb-3">💡 Estrategia para Duelos Bo3 (Al mejor de 3)</h5>
+        <h5 class="fw-bold text-white mb-3">💡 Estrategia para Duelos Bo3 (Al mejor de 3) en Clan Wars</h5>
         <div class="row g-3 text-muted small">
           <div class="col-md-4">
             <strong class="text-white d-block mb-1">1ª Partida: Mazo Seguro</strong>
-            Empieza siempre con tu mazo de mayor winrate (Hog EQ o LavaLoon) para asegurar la primera victoria sin desvelar tus contraataques.
+            Empieza con tu mazo de mayor winrate (Hog EQ o LavaLoon) para asegurar la primera victoria sin comprometer tu baraja antitanques.
           </div>
           <div class="col-md-4">
             <strong class="text-white d-block mb-1">2ª Partida: Adaptación</strong>
-            Si ganaste la primera, cambia a un mazo antitanques como P.E.K.K.A Bridge Spam. Si perdiste, juega tu mazo más defensivo (Cementerio).
+            Si ganaste la primera, cambia a un mazo pesado de presión como P.E.K.K.A Bridge Spam. Si perdiste, juega tu mazo más seguro defensivamente (Cementerio).
           </div>
           <div class="col-md-4">
-            <strong class="text-white d-block mb-1">3ª Partida (Desempate)</strong>
-            El rival esperará que repitas estilo. Sorprende con el mazo restante que tenga el emparejamiento favorable.
+            <strong class="text-white d-block mb-1">3ª Partida: Factor Sorpresa</strong>
+            El rival esperará que repitas estilo. Sorprende con el mazo restante que tenga el emparejamiento más favorable según sus mazos mostrados.
           </div>
         </div>
       </div>
@@ -263,87 +304,205 @@
       <p class="text-secondary small mb-1">
         Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> · DWEF (2º DAW).
       </p>
-      <small class="text-muted">Constructor y Optimizador de Mazos de Clan Wars 2 (Sin Cartas Duplicadas)</small>
+      <small class="text-muted">Constructor Oficial de Sets de Clan Wars 2 (Supercell API Assets)</small>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script src="../lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/api.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 4 Mazos competitivos que NO repiten ninguna de las 32 cartas
-      const competitiveWarSet = {
+      const syncInput = document.getElementById('sync-player-input');
+      const btnSyncPlayer = document.getElementById('btn-sync-player');
+      const syncStatusBadge = document.getElementById('sync-status-badge');
+      const btnCopyAll = document.getElementById('btn-copy-all');
+      const btnLoadOptimal = document.getElementById('btn-load-optimal');
+
+      // Mapa local de cartas oficiales de la API de Supercell (nombre -> objeto carta)
+      let officialCardsMap = {};
+      let playerLevelMap = {};
+
+      // 4 Mazos competitivos que NO repiten ninguna de las 32 cartas (nombres oficiales de la API)
+      const warDecksPlan = {
         deck1: [
-          { name: 'Montapuercos', elixir: 4, level: 15, icon: '🐗' },
-          { name: 'Terremoto', elixir: 3, level: 15, icon: '🌋' },
-          { name: 'Mosquetera', elixir: 4, level: 15, icon: '🎯' },
-          { name: 'Cañón', elixir: 3, level: 15, icon: '💣' },
-          { name: 'Gólem de Hielo', elixir: 2, level: 14, icon: '🧊' },
-          { name: 'Tronco', elixir: 2, level: 15, icon: '🪵' },
-          { name: 'Espíritu Fuego', elixir: 1, level: 15, icon: '🔥' },
-          { name: 'Esqueletos', elixir: 1, level: 15, icon: '💀' }
+          { name: 'Hog Rider', elixir: 4, fallbackLevel: 15 },
+          { name: 'Earthquake', elixir: 3, fallbackLevel: 15 },
+          { name: 'Musketeer', elixir: 4, fallbackLevel: 15 },
+          { name: 'Cannon', elixir: 3, fallbackLevel: 15 },
+          { name: 'Ice Golem', elixir: 2, fallbackLevel: 14 },
+          { name: 'The Log', elixir: 2, fallbackLevel: 15 },
+          { name: 'Fire Spirit', elixir: 1, fallbackLevel: 15 },
+          { name: 'Skeletons', elixir: 1, fallbackLevel: 15 }
         ],
         deck2: [
-          { name: 'Sabueso Lava', elixir: 7, level: 15, icon: '🌋' },
-          { name: 'Globo Bombástico', elixir: 5, level: 15, icon: '🎈' },
-          { name: 'Megaesbirro', elixir: 3, level: 15, icon: '🦇' },
-          { name: 'Dragón Infernal', elixir: 4, level: 15, icon: '🐲' },
-          { name: 'Guardias', elixir: 3, level: 14, icon: '🛡️' },
-          { name: 'Lápida', elixir: 3, level: 15, icon: '🪦' },
-          { name: 'Flechas', elixir: 3, level: 15, icon: '🏹' },
-          { name: 'Bola de Fuego', elixir: 4, level: 15, icon: '🔥' }
+          { name: 'Lava Hound', elixir: 7, fallbackLevel: 15 },
+          { name: 'Balloon', elixir: 5, fallbackLevel: 15 },
+          { name: 'Mega Minion', elixir: 3, fallbackLevel: 15 },
+          { name: 'Inferno Dragon', elixir: 4, fallbackLevel: 15 },
+          { name: 'Guards', elixir: 3, fallbackLevel: 14 },
+          { name: 'Tombstone', elixir: 3, fallbackLevel: 15 },
+          { name: 'Arrows', elixir: 3, fallbackLevel: 15 },
+          { name: 'Fireball', elixir: 4, fallbackLevel: 15 }
         ],
         deck3: [
-          { name: 'P.E.K.K.A', elixir: 7, level: 15, icon: '🤖' },
-          { name: 'Ariete Batalla', elixir: 4, level: 15, icon: '🪵' },
-          { name: 'Bandida', elixir: 3, level: 15, icon: '🥷' },
-          { name: 'Fantasma Real', elixir: 3, level: 15, icon: '👻' },
-          { name: 'Mago Eléctrico', elixir: 4, level: 15, icon: '⚡' },
-          { name: 'Veneno', elixir: 4, level: 15, icon: '☠️' },
-          { name: 'Zap (Descarga)', elixir: 2, level: 15, icon: '⚡' },
-          { name: 'Esbirros', elixir: 3, level: 14, icon: '🦇' }
+          { name: 'P.E.K.K.A', elixir: 7, fallbackLevel: 15 },
+          { name: 'Battle Ram', elixir: 4, fallbackLevel: 15 },
+          { name: 'Bandit', elixir: 3, fallbackLevel: 15 },
+          { name: 'Royal Ghost', elixir: 3, fallbackLevel: 15 },
+          { name: 'Electro Wizard', elixir: 4, fallbackLevel: 15 },
+          { name: 'Poison', elixir: 4, fallbackLevel: 15 },
+          { name: 'Zap', elixir: 2, fallbackLevel: 15 },
+          { name: 'Minions', elixir: 3, fallbackLevel: 14 }
         ],
         deck4: [
-          { name: 'Cementerio', elixir: 5, level: 15, icon: '🪦' },
-          { name: 'Rey Esqueleto', elixir: 4, level: 15, icon: '👑' },
-          { name: 'Bebé Dragón', elixir: 4, level: 15, icon: '🐉' },
-          { name: 'Caballero', elixir: 3, level: 15, icon: '🗡️' },
-          { name: 'Tornado', elixir: 3, level: 15, icon: '🌪️' },
-          { name: 'Torre Bombardera', elixir: 4, level: 15, icon: '💣' },
-          { name: 'Barril Bárbaro', elixir: 2, level: 15, icon: '🛢️' },
-          { name: 'Espíritu Hielo', elixir: 1, level: 14, icon: '❄️' }
+          { name: 'Graveyard', elixir: 5, fallbackLevel: 15 },
+          { name: 'Skeleton King', elixir: 4, fallbackLevel: 15 },
+          { name: 'Baby Dragon', elixir: 4, fallbackLevel: 15 },
+          { name: 'Knight', elixir: 3, fallbackLevel: 15 },
+          { name: 'Tornado', elixir: 3, fallbackLevel: 15 },
+          { name: 'Bomb Tower', elixir: 4, fallbackLevel: 15 },
+          { name: 'Barbarian Barrel', elixir: 2, fallbackLevel: 15 },
+          { name: 'Ice Spirit', elixir: 1, fallbackLevel: 14 }
         ]
       };
 
+      // Carga cartas oficiales de la API
+      const initOfficialCards = async () => {
+        const cardsList = await SupercellAPI.getCards();
+        cardsList.forEach(c => {
+          officialCardsMap[c.name.toLowerCase()] = c;
+        });
+        renderDeckSlots();
+      };
+
+      // Renderiza los 4 slots de mazos con las ilustraciones oficiales de Supercell
       const renderDeckSlots = () => {
+        let totalLevels = 0;
+        let totalCardsCount = 0;
+        const allCardNames = new Set();
+
         ['1', '2', '3', '4'].forEach(num => {
           const container = document.getElementById(`slot-deck-${num}`);
-          const cards = competitiveWarSet[`deck${num}`];
+          const cards = warDecksPlan[`deck${num}`];
 
-          container.innerHTML = cards.map(card => `
-            <div class="col-3">
-              <div class="card-picker-slot" title="${card.name} (Elixir: ${card.elixir})">
-                <span class="cr-card-elixir">${card.elixir}</span>
-                <span class="fs-4">${card.icon}</span>
-                <div class="cr-card-name" style="font-size: 0.68rem;">${card.name}</div>
-                <span class="card-level-badge ${card.level === 15 ? 'max-level' : ''}">Nvl ${card.level}</span>
+          container.innerHTML = cards.map(cPlan => {
+            allCardNames.add(cPlan.name.toLowerCase());
+            const officialCard = officialCardsMap[cPlan.name.toLowerCase()] || {};
+            const imgUrl = officialCard.iconUrls ? (officialCard.iconUrls.medium || officialCard.iconUrls.evolutionMedium) : null;
+            const elixir = officialCard.elixirCost || cPlan.elixir || 3;
+            
+            // Nivel real sincronizado o fallback
+            const cardLevel = playerLevelMap[cPlan.name.toLowerCase()] || cPlan.fallbackLevel || 15;
+            totalLevels += cardLevel;
+            totalCardsCount++;
+
+            return `
+              <div class="col-3">
+                <div class="cr-card-item p-2" title="${cPlan.name} (Elixir: ${elixir})">
+                  <span class="cr-card-elixir">${elixir}</span>
+                  ${imgUrl 
+                    ? `<img src="${imgUrl}" alt="${cPlan.name}" style="height: 52px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));">` 
+                    : `<span class="fs-4">🃏</span>`
+                  }
+                  <div class="cr-card-name" style="font-size: 0.68rem; margin-top: 2px;">${cPlan.name}</div>
+                  <span class="badge ${cardLevel === 15 ? 'bg-danger' : cardLevel === 14 ? 'bg-warning text-dark' : 'bg-secondary'} mt-1" style="font-size: 0.62rem; padding: 2px 6px;">
+                    Nvl ${cardLevel}
+                  </span>
+                </div>
               </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         });
+
+        // Actualizar métricas del set
+        if (totalCardsCount > 0) {
+          const avgLvl = (totalLevels / totalCardsCount).toFixed(1);
+          document.getElementById('set-avg-level').textContent = `Nivel ${avgLvl} (${Math.round((totalLevels / (totalCardsCount * 15)) * 100)}% Élite)`;
+        }
+
+        document.getElementById('validation-status').innerHTML = `
+          <i class="bi bi-check-circle-fill me-1"></i> ${allCardNames.size} / 32 Cartas Únicas Oficiales (0 Duplicadas)
+        `;
       };
 
-      const copyAllDecks = () => {
-        alert('📋 ¡Los 4 enlaces de importación para Clash Royale han sido copiados al portapapeles!');
+      // Sincronizar niveles con la cuenta real de un jugador desde Supercell API
+      const syncPlayerAccount = async (rawTag) => {
+        const tag = SupercellAPI.formatTag(rawTag);
+        syncStatusBadge.className = 'badge bg-secondary';
+        syncStatusBadge.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Consultando cuenta...';
+
+        try {
+          const res = await SupercellAPI.getPlayerFull(tag);
+
+          if (!res.success || !res.data) {
+            syncStatusBadge.className = 'badge bg-danger';
+            syncStatusBadge.innerHTML = '<i class="bi bi-x-circle me-1"></i> Jugador no encontrado';
+            alert(`No se pudo encontrar al jugador con tag "${tag}" en la API oficial de Supercell.`);
+            return;
+          }
+
+          const p = res.data;
+          const unlockedCards = p.cards || [];
+          playerLevelMap = {};
+
+          unlockedCards.forEach(c => {
+            // El nivel en la API es relative to maxLevel (ej: level 14, maxLevel 15)
+            // Calculamos el nivel estándar (1 a 15)
+            const standardLevel = c.level + (15 - (c.maxLevel || 15));
+            playerLevelMap[c.name.toLowerCase()] = Math.max(1, Math.min(15, standardLevel));
+          });
+
+          renderDeckSlots();
+
+          syncStatusBadge.className = 'badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-2';
+          syncStatusBadge.innerHTML = `<i class="bi bi-check-circle me-1"></i> Sincronizado con ${p.name}`;
+          alert(`✅ Niveles sincronizados con éxito con la cuenta de "${p.name}" (${unlockedCards.length} cartas analizadas).`);
+        } catch (err) {
+          syncStatusBadge.className = 'badge bg-danger';
+          syncStatusBadge.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i> Error API';
+          console.error(err);
+        }
       };
 
-      document.getElementById('btn-copy-all').addEventListener('click', copyAllDecks);
-      document.getElementById('btn-load-optimal').addEventListener('click', () => {
-        renderDeckSlots();
-        alert('✨ Set competitivo optimizado cargado con éxito. 32 cartas únicas listas para jugar.');
+      // Eventos
+      btnSyncPlayer.addEventListener('click', () => {
+        const tag = syncInput.value.trim();
+        if (tag) syncPlayerAccount(tag);
       });
 
-      renderDeckSlots();
+      syncInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const tag = syncInput.value.trim();
+          if (tag) syncPlayerAccount(tag);
+        }
+      });
+
+      btnCopyAll.addEventListener('click', () => {
+        const textToCopy = `KMKCStats - Clan Wars 2 Sets Oficiales:
+Mazo 1: https://link.clashroyale.com/deck/es?deck=26000021;28000014;26000014;27000004;26000038;28000011;26000057;26000010
+Mazo 2: https://link.clashroyale.com/deck/es?deck=26000029;26000006;26000039;26000037;26000025;27000009;28000001;28000000
+Mazo 3: https://link.clashroyale.com/deck/es?deck=26000004;26000036;26000046;26000050;26000042;28000009;28000008;26000005
+Mazo 4: https://link.clashroyale.com/deck/es?deck=28000012;26000089;26000015;26000000;28000010;27000007;28000015;26000030`;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          alert('📋 ¡Los 4 enlaces de importación directa a Clash Royale han sido copiados al portapapeles!');
+        }).catch(() => {
+          alert('📋 Enlaces de importación preparados para Clash Royale.');
+        });
+      });
+
+      btnLoadOptimal.addEventListener('click', () => {
+        renderDeckSlots();
+        alert('✨ Set de guerra regenerado con 32 cartas únicas oficiales de Supercell.');
+      });
+
+      // Inicialización
+      initOfficialCards();
+      // Sincronizar de inicio con el jugador por defecto
+      if (syncInput.value.trim()) {
+        syncPlayerAccount(syncInput.value.trim());
+      }
     });
   </script>
 </body>

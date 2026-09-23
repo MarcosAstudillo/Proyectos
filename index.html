@@ -70,8 +70,8 @@
 
           <!-- Acciones en el lateral derecho -->
           <div class="d-flex align-items-center gap-3">
-            <span id="api-status-badge" class="badge bg-secondary">
-              <i class="bi bi-database me-1"></i> Modo Mock Data
+            <span id="api-status-badge" class="badge bg-success">
+              <i class="bi bi-broadcast me-1"></i> API Oficial
             </span>
             <a href="pages/auth.html" class="btn btn-upgrade text-white">
               <i class="bi bi-person-fill me-1"></i> Mi Cuenta
@@ -116,7 +116,7 @@
           <form id="search-form" class="mb-3">
             <div class="search-input-box">
               <i class="bi bi-search search-icon"></i>
-              <input type="text" id="search-input" placeholder="Buscar clanes por nombre o tag (ej. #9PJ99 o #2PP)"
+              <input type="text" id="search-input" placeholder="Buscar clanes por Tag oficial (ej. #L9VRJ o #QLRYPY89)"
                 autocomplete="off" required>
               <button type="submit" class="search-submit-btn">Buscar</button>
             </div>
@@ -124,12 +124,12 @@
 
           <!-- Sugerencias Rápidas para probar con un clic -->
           <div class="quick-tags mb-4">
-            <span class="text-muted small me-2">Tags populares:</span>
-            <a href="#" class="quick-tag-chip" data-tag="#9PJ99" data-type="clans">🧀 Team Queso (#9PJ99)</a>
-            <a href="#" class="quick-tag-chip" data-tag="#2PP" data-type="clans">⭐ Nova I Elites (#2PP)</a>
-            <a href="#" class="quick-tag-chip" data-tag="#22GCR" data-type="clans">⚡ KMKC Esports (#22GCR)</a>
-            <a href="#" class="quick-tag-chip" data-tag="#98VCGY" data-type="players">👑 Mohamed Light (#98VCGY)</a>
-            <a href="#" class="quick-tag-chip" data-tag="#2PP9CL" data-type="players">🎮 Marcos_KMKC (#2PP9CL)</a>
+            <span class="text-muted small me-2">Tags oficiales en vivo:</span>
+            <a href="#" class="quick-tag-chip" data-tag="#L9VRJ" data-type="clans">🇪🇸 Calalas España (#L9VRJ)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#QLRYPY89" data-type="clans">🧀 Queso (#QLRYPY89)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#8UJ2UUJ8" data-type="clans">🏆 MuUuKaNs (#8UJ2UUJ8)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#Y0VVRUVPC" data-type="players">👑 BMBABA (#Y0VVRUVPC)</a>
+            <a href="#" class="quick-tag-chip" data-tag="#R8CQJ0YV8" data-type="players">🎮 el patito&lt;3 (#R8CQJ0YV8)</a>
           </div>
 
           <!-- Texto de soporte y Botón de Discord -->
@@ -288,10 +288,9 @@
               <label for="api-proxy-input" class="form-label text-secondary small fw-bold text-uppercase">Proxy URL
                 (CORS Bypass)</label>
               <input type="url" id="api-proxy-input" class="form-control kmkc-input font-monospace small"
-                placeholder="https://proxy.royaleapi.dev/v1 o tu proxy local">
+                placeholder="http://localhost:8080/v1">
               <small class="text-muted d-block mt-1">
-                Necesario porque los navegadores bloquean llamadas directas a Supercell por CORS. Si no tienes proxy,
-                déjalo vacío y la web usará los datos Mock integrados.
+                Ejecuta <code>python proxy.py</code> en tu terminal para habilitar las peticiones en vivo desde tu IP pública autorizada.
               </small>
             </div>
           </div>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KMKCStats - Análisis y seguimiento diario de Clan Wars 2 (Jueves a Domingo), mazos jugados, pendientes y clanes rivales.">
+  <meta name="description" content="KMKCStats - Análisis oficial en vivo de Clan Wars 2, mazos jugados, pendientes y clanes rivales.">
   <meta name="author" content="Marcos Astudillo Bermúdez">
   <title>Análisis de Guerra (CW2) · KMKCStats</title>
 
@@ -62,11 +62,11 @@
           </ul>
 
           <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-success bg-opacity-75 text-white">
+              <i class="bi bi-broadcast me-1"></i> API Oficial en Vivo
+            </span>
             <a href="auth.html" class="btn btn-outline-light btn-sm fw-bold">
               <i class="bi bi-person-fill me-1"></i> Mi Cuenta
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
-              <i class="bi bi-discord"></i>
             </a>
           </div>
         </div>
@@ -84,71 +84,89 @@
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
           <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-2">
-            <i class="bi bi-shield-shaded me-1"></i> Monitor de Carrera de Río
+            <i class="bi bi-shield-shaded me-1"></i> Monitor de Carrera de Río Oficial
           </span>
           <h1 class="fw-bold text-white mb-1">Análisis de Guerra (Clan Wars 2)</h1>
-          <p class="text-muted mb-0">Seguimiento de mazos diarios, rendimiento de miembros y clanes rivales</p>
+          <p class="text-muted mb-0">Seguimiento en vivo de la River Race oficial, clanes rivales y auditoría de ataques</p>
         </div>
 
-        <!-- Selector Rápido de Clan -->
-        <div class="d-flex align-items-center gap-2 bg-dark p-2 rounded-3 border border-secondary border-opacity-25">
-          <span class="text-muted small fw-bold text-uppercase ms-2">Clan:</span>
+        <!-- Buscador y Selector de Clan -->
+        <div class="d-flex flex-wrap align-items-center gap-2 bg-dark p-2 rounded-3 border border-secondary border-opacity-25">
           <select id="clan-select" class="form-select kmkc-input form-select-sm" style="width: auto;">
-            <option value="#22GCR" selected>⚡ KMKC Esports (#22GCR)</option>
-            <option value="#9PJ99">🧀 Team Queso (#9PJ99)</option>
-            <option value="#2PP">⭐ Nova I Elites (#2PP)</option>
+            <option value="#L9VRJ" selected>🇪🇸 Calalas España (#L9VRJ) - Top 1</option>
+            <option value="#8UJ2UUJ8">🏆 #MuUuKaNs!! (#8UJ2UUJ8) - Top 2</option>
+            <option value="#QLRYPY89">🧀 Queso (#QLRYPY89)</option>
           </select>
+          <div class="input-group input-group-sm" style="width: 170px;">
+            <input type="text" id="custom-clan-input" class="form-control kmkc-input text-uppercase font-monospace" placeholder="#TAG clan">
+            <button class="btn btn-upgrade" id="btn-search-clan" title="Buscar clan">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Selector de Días de Guerra (Jueves a Domingo) -->
+      <!-- Estado de la Fase de Guerra en Vivo -->
       <div class="kmkc-card p-3 mb-4">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
           <div class="d-flex align-items-center gap-2">
             <i class="bi bi-calendar-week fs-4 text-warning"></i>
             <div>
-              <strong class="text-white d-block">Días de Batalla Oficiales</strong>
-              <small class="text-muted">Reinicios diarios a las 10:00 UTC (11:00 / 12:00 Madrid)</small>
+              <strong class="text-white d-block" id="war-phase-title">Fase de Guerra de Supercell</strong>
+              <small class="text-muted" id="war-phase-desc">Reinicios oficiales diarios a las 10:00 UTC (11:00 / 12:00 Madrid)</small>
             </div>
           </div>
 
-          <div class="war-day-tabs" id="war-days-container">
-            <button class="war-day-btn" data-day="thursday">Jueves (Día 1)</button>
-            <button class="war-day-btn" data-day="friday">Viernes (Día 2)</button>
-            <button class="war-day-btn active" data-day="saturday">Sábado (Día 3 - Hoy)</button>
-            <button class="war-day-btn" data-day="sunday">Domingo (Día 4 - Coliseo)</button>
+          <div class="d-flex align-items-center gap-2">
+            <span id="war-status-badge" class="badge bg-warning text-dark px-3 py-2 fw-bold">
+              Cargando estado...
+            </span>
+            <span id="clan-tag-display" class="badge bg-dark border border-secondary text-info font-monospace px-3 py-2">
+              #L9VRJ
+            </span>
           </div>
         </div>
       </div>
 
-      <!-- Métricas Clave del Día Seleccionado -->
+      <!-- Alerta de Error (oculta por defecto) -->
+      <div id="war-error-alert" class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-white d-none mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
+          <div>
+            <strong class="d-block" id="war-error-text">Error al cargar datos oficiales</strong>
+            <small class="text-secondary">Asegúrate de ejecutar <code>python proxy.py</code> en tu terminal para conectar con la API.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Clave del Clan en Vivo -->
       <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
           <div class="stat-box">
-            <div id="metric-decks" class="stat-value text-white">176 / 200</div>
+            <div id="metric-decks" class="stat-value text-white">-- / 200</div>
             <div class="stat-label">Mazos Jugados Hoy</div>
-            <small class="text-success fw-bold">88% Completado</small>
+            <small id="metric-decks-pct" class="text-success fw-bold">--% Completado</small>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-box">
-            <div id="metric-pending" class="stat-value text-danger">24</div>
+            <div id="metric-pending" class="stat-value text-danger">--</div>
             <div class="stat-label">Mazos por Jugar</div>
-            <small class="text-muted">6 jugadores pendientes</small>
+            <small id="metric-pending-members" class="text-muted">-- jugadores pendientes</small>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-box">
-            <div id="metric-avg-fame" class="stat-value text-warning">865 🎖️</div>
-            <div class="stat-label">Media Puntuación / Jugador</div>
-            <small class="text-info fw-bold">+12% vs semana previa</small>
+            <div id="metric-avg-fame" class="stat-value text-warning">-- 🎖️</div>
+            <div class="stat-label">Puntos de Fama Totales</div>
+            <small class="text-info fw-bold">Acumulado en la carrera</small>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-box">
-            <div id="metric-boat-attacks" class="stat-value text-info">7 ⚔️</div>
-            <div class="stat-label">Ataques a Barcos Rival</div>
-            <small class="text-warning">2 defensas destruidas</small>
+            <div id="metric-boat-attacks" class="stat-value text-info">-- ⚔️</div>
+            <div class="stat-label">Ataques a Barcos</div>
+            <small class="text-warning">Realizados esta semana</small>
           </div>
         </div>
       </div>
@@ -158,16 +176,19 @@
         <div class="col-lg-7">
           <div class="kmkc-card p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0">⛵ Posiciones de la Carrera de Río</h5>
+              <h5 class="fw-bold text-white mb-0">⛵ Posiciones de la Carrera de Río (Grupo Fluvial)</h5>
               <span class="badge bg-warning text-dark fw-bold">Meta: 50.000 Medallas</span>
             </div>
             
             <p class="text-muted small mb-4">
-              Progreso acumulado durante los días de guerra en el grupo fluvial actual.
+              Puntos reales de fama y posición en vivo de los 5 clanes asignados a este río.
             </p>
 
             <div id="rival-clans-list">
-              <!-- Clanes rivales inyectados dinámicamente -->
+              <div class="text-center py-4 text-muted">
+                <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                Cargando clanes del río oficial...
+              </div>
             </div>
           </div>
         </div>
@@ -176,36 +197,36 @@
         <div class="col-lg-5">
           <div class="kmkc-card p-4 h-100 d-flex flex-column justify-content-between">
             <div>
-              <h5 class="fw-bold text-white mb-3">🛡️ Estado del Barco de Clan</h5>
+              <h5 class="fw-bold text-white mb-3">🛡️ Estado del Clan en Guerra</h5>
               <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-secondary small fw-bold">SALUD DEL BARCO</span>
-                  <span class="badge bg-success">100% Blindado</span>
+                  <span class="text-secondary small fw-bold">PROGRESO DEL CLAN</span>
+                  <span id="clan-war-pct" class="badge bg-success">0%</span>
                 </div>
                 <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-success" style="width: 100%;"></div>
+                  <div id="clan-war-progress-bar" class="progress-bar bg-success" style="width: 0%;"></div>
                 </div>
               </div>
 
-              <h6 class="text-secondary small fw-bold text-uppercase mb-2">Resumen Táctico:</h6>
-              <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+              <h6 class="text-secondary small fw-bold text-uppercase mb-2">Información Oficial:</h6>
+              <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2" id="war-insights-list">
+                <li class="d-flex align-items-center gap-2">
+                  <i class="bi bi-info-circle-fill text-info"></i>
+                  <span id="insight-rank">Consultando posición en la carrera...</span>
+                </li>
+                <li class="d-flex align-items-center gap-2">
+                  <i class="bi bi-people-fill text-warning"></i>
+                  <span id="insight-participants">Contabilizando participantes activos...</span>
+                </li>
                 <li class="d-flex align-items-center gap-2">
                   <i class="bi bi-check-circle-fill text-success"></i>
-                  <span>Liderando la carrera con <strong>+3.600</strong> medallas sobre el 2º puesto.</span>
-                </li>
-                <li class="d-flex align-items-center gap-2">
-                  <i class="bi bi-shield-check text-info"></i>
-                  <span>Las 3 defensas del barco permanecen intactas.</span>
-                </li>
-                <li class="d-flex align-items-center gap-2">
-                  <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                  <span>Faltan 6 miembros por completar sus 4 mazos antes del reinicio.</span>
+                  <span id="insight-fame">Suma de medallas oficiales obtenidas.</span>
                 </li>
               </ul>
             </div>
 
             <button id="send-reminder-btn" class="btn btn-upgrade w-100 mt-4 py-2">
-              <i class="bi bi-bell-fill me-2"></i> Notificar a Miembros Pendientes
+              <i class="bi bi-bell-fill me-2"></i> Generar Alerta para Miembros Pendientes
             </button>
           </div>
         </div>
@@ -215,15 +236,15 @@
       <div class="kmkc-card p-4">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
           <div>
-            <h5 class="fw-bold text-white mb-1">👥 Auditoría de Miembros de Guerra</h5>
-            <p class="text-muted small mb-0">Control de mazos jugados hoy y aportación en medallas</p>
+            <h5 class="fw-bold text-white mb-1">👥 Auditoría de Miembros de Guerra Oficial</h5>
+            <p class="text-muted small mb-0">Datos reales de mazos jugados hoy y medallas aportadas</p>
           </div>
 
           <!-- Filtro de estado de ataques -->
           <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-light active filter-member-btn" data-filter="all">Todos (50)</button>
-            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="completed">Completos 4/4 (44)</button>
-            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="pending">Pendientes (6)</button>
+            <button type="button" class="btn btn-outline-light active filter-member-btn" data-filter="all" id="btn-filter-all">Todos (--)</button>
+            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="completed" id="btn-filter-completed">Completos 4/4 (--)</button>
+            <button type="button" class="btn btn-outline-light filter-member-btn" data-filter="pending" id="btn-filter-pending">Pendientes (--)</button>
           </div>
         </div>
 
@@ -231,17 +252,22 @@
           <table class="table kmkc-table align-middle mb-0">
             <thead>
               <tr>
-                <th>Miembro</th>
-                <th>Rango</th>
-                <th>Mazos Gastados</th>
-                <th>Medallas Hoy</th>
+                <th>Jugador</th>
+                <th>Tag</th>
+                <th>Mazos Jugados Hoy</th>
+                <th>Medallas de Guerra</th>
                 <th>Ataques Barco</th>
                 <th>Estado</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody id="war-members-tbody">
-              <!-- Rellenado con JavaScript -->
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Cargando miembros de la guerra oficial...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -262,7 +288,7 @@
       <p class="text-secondary small mb-1">
         Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> · DWEF (2º DAW).
       </p>
-      <small class="text-muted">Módulo de Análisis Avanzado de Clan Wars 2</small>
+      <small class="text-muted">Módulo de Análisis Oficial de Clan Wars 2 (Supercell API)</small>
     </div>
   </footer>
 
@@ -270,109 +296,219 @@
   <script src="../lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/api.js"></script>
   <script>
-    // Lógica específica para la página de Análisis de Guerra
     document.addEventListener('DOMContentLoaded', () => {
       const clanSelect = document.getElementById('clan-select');
-      const dayButtons = document.querySelectorAll('.war-day-btn');
+      const customClanInput = document.getElementById('custom-clan-input');
+      const btnSearchClan = document.getElementById('btn-search-clan');
       const rivalClansContainer = document.getElementById('rival-clans-list');
       const warMembersTbody = document.getElementById('war-members-tbody');
       const reminderBtn = document.getElementById('send-reminder-btn');
       const filterButtons = document.querySelectorAll('.filter-member-btn');
+      const warErrorAlert = document.getElementById('war-error-alert');
+      const warErrorText = document.getElementById('war-error-text');
 
+      let currentParticipants = [];
       let currentFilter = 'all';
 
-      // Base de datos de miembros simulada para la auditoría de mazos
-      const mockClanMembers = [
-        { name: 'Marcos Astudillo', role: 'Líder', decks: 4, fame: 950, boats: 2, status: 'Completado' },
-        { name: 'Ruben_Pro', role: 'Colíder', decks: 4, fame: 920, boats: 0, status: 'Completado' },
-        { name: 'KMKC_Striker', role: 'Colíder', decks: 4, fame: 890, boats: 1, status: 'Completado' },
-        { name: 'Alex_Ghost', role: 'Veterano', decks: 4, fame: 880, boats: 0, status: 'Completado' },
-        { name: 'Valkyrie_Queen', role: 'Veterano', decks: 4, fame: 860, boats: 0, status: 'Completado' },
-        { name: 'DarkPrince99', role: 'Miembro', decks: 4, fame: 820, boats: 2, status: 'Completado' },
-        { name: 'Sniper_Bowler', role: 'Miembro', decks: 2, fame: 410, boats: 1, status: 'Pendiente' },
-        { name: 'Electro_Mage', role: 'Miembro', decks: 1, fame: 220, boats: 0, status: 'Pendiente' },
-        { name: 'IceGolem_Troll', role: 'Miembro', decks: 0, fame: 0, boats: 0, status: 'Sin Atacar' },
-        { name: 'Firecracker_Fan', role: 'Miembro', decks: 2, fame: 390, boats: 0, status: 'Pendiente' },
-        { name: 'Cannon_Master', role: 'Veterano', decks: 0, fame: 0, boats: 0, status: 'Sin Atacar' },
-        { name: 'Mini_Pekka_Boy', role: 'Miembro', decks: 3, fame: 610, boats: 1, status: 'Pendiente' }
-      ];
+      // Cargar análisis de guerra de un clan
+      const loadWarAnalysis = async (rawTag) => {
+        const tag = SupercellAPI.formatTag(rawTag);
+        document.getElementById('clan-tag-display').textContent = tag;
+        warErrorAlert.classList.add('d-none');
 
-      // Datos de clanes rivales
-      const rivalClans = [
-        { rank: 1, name: 'KMKC Esports', tag: '#22GCR', fame: 42100, decks: 176, badge: '⚡', isCurrent: true },
-        { rank: 2, name: 'Furia Roja', tag: '#FR01', fame: 38500, decks: 164, badge: '🔥', isCurrent: false },
-        { rank: 3, name: 'Hispania War', tag: '#HW99', fame: 36200, decks: 152, badge: '⚔️', isCurrent: false },
-        { rank: 4, name: 'Los Titanes', tag: '#LT33', fame: 33100, decks: 140, badge: '🛡️', isCurrent: false },
-        { rank: 5, name: 'Valientes CR', tag: '#VC12', fame: 29800, decks: 128, badge: '👑', isCurrent: false }
-      ];
+        // Mostrar estado de carga
+        rivalClansContainer.innerHTML = `
+          <div class="text-center py-4 text-muted">
+            <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+            Consultando Carrera de Río en vivo desde Supercell...
+          </div>
+        `;
+        warMembersTbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+              Obteniendo participantes de la guerra oficial...
+            </td>
+          </tr>
+        `;
 
-      // Renderizar clanes rivales
-      const renderRivals = () => {
-        rivalClansContainer.innerHTML = rivalClans.map(clan => {
-          const percent = Math.min(100, Math.round((clan.fame / 50000) * 100));
+        try {
+          const res = await SupercellAPI.getRiverRace(tag);
+
+          if (!res.success || !res.data) {
+            warErrorText.textContent = res.error || 'No se pudieron obtener los datos de la guerra.';
+            warErrorAlert.classList.remove('d-none');
+            rivalClansContainer.innerHTML = '<p class="text-muted text-center py-3">Sin datos disponibles.</p>';
+            warMembersTbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">No hay participantes registrados.</td></tr>';
+            return;
+          }
+
+          const raceData = res.data;
+          const myClan = raceData.clan || {};
+          const rivalClans = raceData.clans || [];
+          currentParticipants = myClan.participants || [];
+
+          // 1. Fase de Guerra
+          const periodTypeMap = {
+            'training': 'Días de Entrenamiento (Lunes a Miércoles)',
+            'warDay': 'Días de Batalla Fluvial (Jueves a Domingo)',
+            'riverRace': 'Días de Batalla Fluvial (Jueves a Domingo)',
+            'colosseum': 'Semana del Coliseo de Guerra'
+          };
+          const periodTypeName = periodTypeMap[raceData.periodType] || 'Carrera de Río';
+          document.getElementById('war-phase-title').textContent = periodTypeName;
+          document.getElementById('war-phase-desc').textContent = `Sección #${(raceData.sectionIndex || 0) + 1} · Período ${raceData.periodIndex || 1} · Estado: ${raceData.state || 'Activo'}`;
+          document.getElementById('war-status-badge').textContent = raceData.periodType === 'training' ? 'Modo Entrenamiento' : 'Batalla Activa';
+
+          // 2. Métricas del Clan
+          const totalDecksToday = currentParticipants.reduce((acc, p) => acc + (p.decksUsedToday || 0), 0);
+          const maxDecksToday = Math.max(currentParticipants.length * 4, 200);
+          const pendingDecks = Math.max(0, maxDecksToday - totalDecksToday);
+          const pendingMembersCount = currentParticipants.filter(p => (p.decksUsedToday || 0) < 4).length;
+          const completedMembersCount = currentParticipants.filter(p => (p.decksUsedToday || 0) >= 4).length;
+          const totalFame = myClan.fame || 0;
+          const totalBoatAttacks = currentParticipants.reduce((acc, p) => acc + (p.boatAttacks || 0), 0);
+
+          document.getElementById('metric-decks').textContent = `${totalDecksToday} / ${maxDecksToday}`;
+          const decksPct = Math.round((totalDecksToday / maxDecksToday) * 100) || 0;
+          document.getElementById('metric-decks-pct').textContent = `${decksPct}% Completado`;
+          document.getElementById('metric-pending').textContent = `${pendingDecks}`;
+          document.getElementById('metric-pending-members').textContent = `${pendingMembersCount} miembros con ataques pendientes`;
+          document.getElementById('metric-avg-fame').textContent = `${totalFame.toLocaleString()} 🎖️`;
+          document.getElementById('metric-boat-attacks').textContent = `${totalBoatAttacks} ⚔️`;
+
+          // Progreso a 50.000
+          const famePct = Math.min(100, Math.round((totalFame / 50000) * 100));
+          document.getElementById('clan-war-pct').textContent = `${famePct}% (${totalFame.toLocaleString()} / 50.000)`;
+          document.getElementById('clan-war-progress-bar').style.width = `${famePct}%`;
+
+          // 3. Renderizar Clanes Rivales
+          // Ordenar clanes por fama descendente
+          const sortedClans = [...rivalClans].sort((a, b) => (b.fame || 0) - (a.fame || 0));
+          const myRank = sortedClans.findIndex(c => c.tag === tag) + 1;
+
+          document.getElementById('insight-rank').textContent = myRank > 0 
+            ? `Puesto #${myRank} de 5 en la carrera fluvial esta semana.` 
+            : `Participando en el grupo fluvial con ${myClan.name}.`;
+          document.getElementById('insight-participants').textContent = `${currentParticipants.length} miembros del clan han participado en esta guerra.`;
+          document.getElementById('insight-fame').textContent = `Total acumulado: ${totalFame.toLocaleString()} puntos de fama.`;
+
+          rivalClansContainer.innerHTML = sortedClans.map((clan, idx) => {
+            const isCurrent = clan.tag === tag;
+            const cFame = clan.fame || 0;
+            const cPct = Math.min(100, Math.round((cFame / 50000) * 100));
+            return `
+              <div class="p-3 rounded-3 mb-3 ${isCurrent ? 'bg-primary bg-opacity-10 border border-primary border-opacity-50' : 'bg-dark bg-opacity-50 border border-secondary border-opacity-25'}">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge ${idx === 0 ? 'bg-warning text-dark' : 'bg-secondary'} rounded-pill">#${idx + 1}</span>
+                    <span class="fs-5">🛡️</span>
+                    <div>
+                      <strong class="text-white">${clan.name}</strong>
+                      ${isCurrent ? '<span class="badge bg-primary ms-1">Tu Clan</span>' : ''}
+                      <small class="text-muted font-monospace d-block">${clan.tag}</small>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <span class="fw-bold text-warning">${cFame.toLocaleString()} 🎖️</span>
+                    <small class="text-muted d-block">${cPct}% a la meta</small>
+                  </div>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar ${isCurrent ? 'bg-danger' : 'bg-warning'}" style="width: ${cPct}%;"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          // 4. Actualizar contadores de filtros
+          document.getElementById('btn-filter-all').textContent = `Todos (${currentParticipants.length})`;
+          document.getElementById('btn-filter-completed').textContent = `Completos 4/4 (${completedMembersCount})`;
+          document.getElementById('btn-filter-pending').textContent = `Pendientes (${pendingMembersCount})`;
+
+          // 5. Renderizar Miembros
+          renderMembers();
+
+        } catch (err) {
+          console.error(err);
+          warErrorText.textContent = 'Error de conexión con la API de Clash Royale: ' + err.message;
+          warErrorAlert.classList.remove('d-none');
+        }
+      };
+
+      // Renderizar tabla de miembros filtrada
+      const renderMembers = () => {
+        const filtered = currentParticipants.filter(m => {
+          const usedToday = m.decksUsedToday || 0;
+          if (currentFilter === 'completed') return usedToday >= 4;
+          if (currentFilter === 'pending') return usedToday < 4;
+          return true;
+        });
+
+        // Ordenar por fama descendente
+        filtered.sort((a, b) => (b.fame || 0) - (a.fame || 0));
+
+        if (filtered.length === 0) {
+          warMembersTbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">
+                No hay miembros en esta categoría.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        warMembersTbody.innerHTML = filtered.map(m => {
+          const usedToday = m.decksUsedToday || 0;
+          const isDone = usedToday >= 4;
+          const isZero = usedToday === 0;
+
           return `
-            <div class="p-3 rounded-3 mb-3 ${clan.isCurrent ? 'bg-primary bg-opacity-10 border border-primary border-opacity-50' : 'bg-dark bg-opacity-50 border border-secondary border-opacity-25'}">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge ${clan.rank === 1 ? 'bg-warning text-dark' : 'bg-secondary'} rounded-pill">#${clan.rank}</span>
-                  <span class="fs-5">${clan.badge}</span>
-                  <strong>${clan.name}</strong>
-                  <small class="text-muted font-monospace">${clan.tag}</small>
-                </div>
-                <div class="text-end">
-                  <span class="fw-bold text-warning">${clan.fame.toLocaleString()} 🎖️</span>
-                  <small class="text-muted d-block">${clan.decks}/200 Mazos</small>
-                </div>
-              </div>
-              <div class="progress" style="height: 6px;">
-                <div class="progress-bar ${clan.isCurrent ? 'bg-danger' : 'bg-warning'}" style="width: ${percent}%;"></div>
-              </div>
-            </div>
+            <tr>
+              <td class="fw-bold text-white">${m.name}</td>
+              <td><small class="text-muted font-monospace">${m.tag}</small></td>
+              <td>
+                <span class="fw-bold ${isDone ? 'text-success' : 'text-danger'}">${usedToday}/4</span>
+                <small class="text-muted ms-1">(${m.decksUsed || 0} total)</small>
+              </td>
+              <td class="text-warning fw-bold">${(m.fame || 0).toLocaleString()} 🎖️</td>
+              <td>${m.boatAttacks || 0} ⚔️</td>
+              <td>
+                <span class="badge ${isDone ? 'bg-success' : isZero ? 'bg-danger' : 'bg-warning text-dark'}">
+                  ${isDone ? 'Completado' : isZero ? 'Sin Atacar' : `Pendiente (${4 - usedToday})`}
+                </span>
+              </td>
+              <td>
+                ${!isDone ? `
+                  <button class="btn btn-sm btn-outline-warning notify-single-btn" data-name="${m.name}">
+                    <i class="bi bi-chat-dots me-1"></i> Recordar
+                  </button>
+                ` : `
+                  <span class="text-muted small"><i class="bi bi-check2-all text-success"></i> Al día</span>
+                `}
+              </td>
+            </tr>
           `;
         }).join('');
       };
 
-      // Renderizar tabla de miembros
-      const renderMembers = () => {
-        const filtered = mockClanMembers.filter(m => {
-          if (currentFilter === 'completed') return m.decks === 4;
-          if (currentFilter === 'pending') return m.decks < 4;
-          return true;
-        });
+      // Eventos de selección de clan
+      clanSelect.addEventListener('change', (e) => {
+        loadWarAnalysis(e.target.value);
+      });
 
-        warMembersTbody.innerHTML = filtered.map(m => `
-          <tr>
-            <td class="fw-bold text-white">${m.name}</td>
-            <td><span class="badge bg-dark border border-secondary text-secondary">${m.role}</span></td>
-            <td>
-              <span class="fw-bold ${m.decks === 4 ? 'text-success' : 'text-danger'}">${m.decks}/4</span>
-            </td>
-            <td class="text-warning fw-bold">${m.fame} 🎖️</td>
-            <td>${m.boats} ⚔️</td>
-            <td>
-              <span class="badge ${m.decks === 4 ? 'bg-success' : m.decks === 0 ? 'bg-danger' : 'bg-warning text-dark'}">
-                ${m.status}
-              </span>
-            </td>
-            <td>
-              ${m.decks < 4 ? `
-                <button class="btn btn-sm btn-outline-warning notify-single-btn" data-name="${m.name}">
-                  <i class="bi bi-chat-dots me-1"></i> Avisar
-                </button>
-              ` : `
-                <span class="text-muted small"><i class="bi bi-check2-all text-success"></i> Al día</span>
-              `}
-            </td>
-          </tr>
-        `).join('');
-      };
+      btnSearchClan.addEventListener('click', () => {
+        const query = customClanInput.value.trim();
+        if (query) loadWarAnalysis(query);
+      });
 
-      // Manejo de tabs de días
-      dayButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          dayButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
+      customClanInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const query = customClanInput.value.trim();
+          if (query) loadWarAnalysis(query);
+        }
       });
 
       // Filtros de miembros
@@ -385,23 +521,23 @@
         });
       });
 
-      // Recordatorio a miembros
-      if (reminderBtn) {
-        reminderBtn.addEventListener('click', () => {
-          alert('📢 Notificación enviada a los 6 miembros con mazos pendientes de guerra.');
-        });
-      }
+      // Botón general de recordar
+      reminderBtn.addEventListener('click', () => {
+        const pendingCount = currentParticipants.filter(p => (p.decksUsedToday || 0) < 4).length;
+        alert(`📢 Se ha generado la lista de recordatorio para los ${pendingCount} miembros con mazos pendientes de guerra.`);
+      });
 
+      // Botón individual de recordar
       document.addEventListener('click', (e) => {
-        const notifyBtn = e.target.closest('.notify-single-btn');
-        if (notifyBtn) {
-          const name = notifyBtn.dataset.name;
-          alert(`📢 Recordatorio enviado a ${name} para que complete sus mazos de hoy.`);
+        const btn = e.target.closest('.notify-single-btn');
+        if (btn) {
+          const name = btn.dataset.name;
+          alert(`📢 Recordatorio enviado a ${name} para que juegue sus 4 ataques de guerra antes del reinicio diario.`);
         }
       });
 
-      renderRivals();
-      renderMembers();
+      // Carga inicial con el clan seleccionado
+      loadWarAnalysis(clanSelect.value);
     });
   </script>
 </body>

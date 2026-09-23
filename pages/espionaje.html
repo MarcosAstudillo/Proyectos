@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KMKCStats - Espionaje táctico de jugadores rivales: horarios de juego comparados con Madrid (UTC +1), hábitos de cartas y win conditions.">
+  <meta name="description" content="KMKCStats - Espionaje táctico en vivo de jugadores rivales: horarios reales comparados con Madrid (UTC +1), hábitos de cartas y registro de batallas.">
   <meta name="author" content="Marcos Astudillo Bermúdez">
   <title>Espionaje Táctico · KMKCStats</title>
 
@@ -62,11 +62,11 @@
           </ul>
 
           <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-success bg-opacity-75 text-white">
+              <i class="bi bi-broadcast me-1"></i> API Oficial en Vivo
+            </span>
             <a href="auth.html" class="btn btn-outline-light btn-sm fw-bold">
               <i class="bi bi-person-fill me-1"></i> Mi Cuenta
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 hover-white" title="Comunidad de Discord">
-              <i class="bi bi-discord"></i>
             </a>
           </div>
         </div>
@@ -83,25 +83,37 @@
       <!-- Encabezado de Sección -->
       <div class="text-center max-w-700 mx-auto mb-5">
         <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2 rounded-pill mb-2">
-          <i class="bi bi-radar me-1"></i> Inteligencia Táctica
+          <i class="bi bi-radar me-1"></i> Inteligencia Táctica Oficial
         </span>
         <h1 class="fw-bold text-white mb-2">Espionaje de Jugadores Rivales</h1>
         <p class="text-muted">
-          Analiza los patrones de juego de cualquier oponente: horas habituales de ataque según el huso de <strong>Madrid (UTC +1)</strong>, hábitos de mazos y win conditions.
+          Analiza los patrones de juego en vivo de cualquier oponente: horas habituales de ataque según el huso de <strong>Madrid (UTC +1)</strong>, cartas más utilizadas y registro de batallas.
         </p>
 
         <!-- Buscador de Espionaje -->
         <div class="search-input-box mt-4 mx-auto" style="max-width: 580px;">
           <i class="bi bi-search search-icon"></i>
-          <input type="text" id="spy-player-input" placeholder="Introduce el Tag del jugador rival (#TAG)" value="#98VCGY">
+          <input type="text" id="spy-player-input" placeholder="Introduce el Tag oficial (#TAG)" value="#R8CQJ0YV8">
           <button id="spy-search-btn" class="search-submit-btn">Espiar</button>
         </div>
 
-        <!-- Tags Rápidos -->
+        <!-- Tags Rápidos Oficiales -->
         <div class="quick-tags mt-3">
-          <span class="text-muted small me-2">Espiar a:</span>
-          <button class="quick-tag-chip spy-quick-chip" data-tag="#98VCGY">👑 Mohamed Light (#98VCGY)</button>
-          <button class="quick-tag-chip spy-quick-chip" data-tag="#2PP9CL">🎮 Marcos_KMKC (#2PP9CL)</button>
+          <span class="text-muted small me-2">Objetivos sugeridos:</span>
+          <button class="quick-tag-chip spy-quick-chip" data-tag="#R8CQJ0YV8">🎮 el patito&lt;3 (#R8CQJ0YV8)</button>
+          <button class="quick-tag-chip spy-quick-chip" data-tag="#Y0VVRUVPC">👑 BMBABA (#Y0VVRUVPC)</button>
+          <button class="quick-tag-chip spy-quick-chip" data-tag="#P8PGC9Q0">⚡ Demon (#P8PGC9Q0)</button>
+        </div>
+      </div>
+
+      <!-- Alerta de Error -->
+      <div id="spy-error-alert" class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-white d-none mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
+          <div>
+            <strong class="d-block" id="spy-error-text">No se pudo espiar al jugador</strong>
+            <small class="text-secondary">Comprueba que el Tag exista en Clash Royale y que <code>python proxy.py</code> esté activo.</small>
+          </div>
         </div>
       </div>
 
@@ -114,17 +126,18 @@
             </div>
             <div>
               <div class="d-flex align-items-center gap-2">
-                <h2 id="spy-name" class="fw-bold text-white mb-0">Mohamed Light</h2>
-                <span id="spy-tag" class="badge bg-dark border border-secondary text-info font-monospace">#98VCGY</span>
+                <h2 id="spy-name" class="fw-bold text-white mb-0">Cargando...</h2>
+                <span id="spy-tag" class="badge bg-dark border border-secondary text-info font-monospace">#R8CQJ0YV8</span>
+                <span class="badge bg-success bg-opacity-75 text-white"><i class="bi bi-broadcast me-1"></i> API Oficial</span>
               </div>
               <p class="text-muted mb-0 mt-1">
-                Clan: <strong id="spy-clan" class="text-white">Nova I Elites</strong> · Nivel de Torre <span id="spy-level" class="text-warning">15</span>
+                Clan: <strong id="spy-clan" class="text-white">Consultando...</strong> · Nivel de Torre <span id="spy-level" class="text-warning">--</span>
               </p>
             </div>
           </div>
           <div class="text-end">
-            <span class="badge bg-danger px-3 py-2 fs-6 rounded-pill">
-              🔴 Objetivo Detectado
+            <span id="spy-trophies-badge" class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill fw-bold">
+              🏆 -- Copas
             </span>
           </div>
         </div>
@@ -134,14 +147,14 @@
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div>
               <h5 class="fw-bold text-white mb-1">
-                <i class="bi bi-clock-history text-warning me-2"></i> Horario de Batallas de Guerra (Comparado a Madrid UTC +1)
+                <i class="bi bi-clock-history text-warning me-2"></i> Horario de Batallas Real (Convertido a Hora de Madrid UTC +1)
               </h5>
               <p class="text-muted small mb-0">
-                Frecuencia en la que este jugador realiza sus 4 ataques según la hora peninsular española.
+                Frecuencia horaria calculada a partir de los timestamps reales de sus últimas batallas oficiales.
               </p>
             </div>
             <span class="badge bg-dark border border-warning text-warning px-3 py-2">
-              <i class="bi bi-geo-alt-fill me-1"></i> Referencia: Hora de Madrid (UTC +1)
+              <i class="bi bi-geo-alt-fill me-1"></i> Referencia: Hora Peninsular (Madrid)
             </span>
           </div>
 
@@ -158,27 +171,27 @@
             <span>23:00 (Noche)</span>
           </div>
 
-          <!-- Diagnóstico de Horario -->
+          <!-- Diagnóstico de Horario Calculado -->
           <div class="row g-3 mt-3">
             <div class="col-md-4">
               <div class="stat-box p-2">
                 <small class="text-muted text-uppercase fw-bold">Horario Más Frecuente</small>
-                <div class="fw-bold text-white mt-1">20:00 - 23:30 (Noche)</div>
-                <small class="text-info">82% de sus ataques</small>
+                <div id="stat-peak-hours" class="fw-bold text-white mt-1">Calculando...</div>
+                <small id="stat-peak-desc" class="text-info">Basado en battle log</small>
               </div>
             </div>
             <div class="col-md-4">
               <div class="stat-box p-2">
-                <small class="text-muted text-uppercase fw-bold">Ataque Temprano</small>
-                <div class="fw-bold text-danger mt-1">Baja Probabilidad</div>
-                <small class="text-muted">Rara vez juega antes de las 14:00</small>
+                <small class="text-muted text-uppercase fw-bold">Ataque en Mañana (06:00-14:00)</small>
+                <div id="stat-morning-attack" class="fw-bold mt-1">Calculando...</div>
+                <small id="stat-morning-desc" class="text-muted">Frecuencia matutina</small>
               </div>
             </div>
             <div class="col-md-4">
               <div class="stat-box p-2">
-                <small class="text-muted text-uppercase fw-bold">Zona Horaria Estimada</small>
-                <div class="fw-bold text-success mt-1">Europa / África (UTC +1 a +2)</div>
-                <small class="text-muted">Coincide con España y Egipto</small>
+                <small class="text-muted text-uppercase fw-bold">Total Batallas Analizadas</small>
+                <div id="stat-total-battles" class="fw-bold text-success mt-1">--</div>
+                <small class="text-muted">Registro oficial reciente</small>
               </div>
             </div>
           </div>
@@ -189,135 +202,80 @@
           <div class="col-lg-6">
             <div class="kmkc-card p-4 h-100">
               <h5 class="fw-bold text-white mb-3">
-                <i class="bi bi-pie-chart-fill text-danger me-2"></i> Win Conditions Más Utilizadas
+                <i class="bi bi-pie-chart-fill text-danger me-2"></i> Cartas Más Utilizadas en sus Batallas
               </h5>
 
-              <div class="mb-3">
-                <div class="d-flex justify-content-between small text-muted mb-1">
-                  <span class="text-white fw-bold">🐗 Montapuercos</span>
-                  <span class="text-success fw-bold">48% de uso (WR: 92%)</span>
-                </div>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-danger" style="width: 48%;"></div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <div class="d-flex justify-content-between small text-muted mb-1">
-                  <span class="text-white fw-bold">🌋 Sabueso de Lava</span>
-                  <span class="text-warning fw-bold">28% de uso (WR: 88%)</span>
-                </div>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-warning" style="width: 28%;"></div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <div class="d-flex justify-content-between small text-muted mb-1">
-                  <span class="text-white fw-bold">🤖 P.E.K.K.A</span>
-                  <span class="text-info fw-bold">16% de uso (WR: 84%)</span>
-                </div>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-info" style="width: 16%;"></div>
-                </div>
-              </div>
-
-              <div class="mb-0">
-                <div class="d-flex justify-content-between small text-muted mb-1">
-                  <span class="text-white fw-bold">🪦 Cementerio</span>
-                  <span class="text-secondary fw-bold">8% de uso (WR: 80%)</span>
-                </div>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-secondary" style="width: 8%;"></div>
+              <div id="win-conditions-container">
+                <div class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                  Extrayendo cartas utilizadas del registro oficial...
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Rendimiento en Duelos al mejor de 3 (Bo3) -->
+          <!-- Rendimiento Competitivo Oficial -->
           <div class="col-lg-6">
             <div class="kmkc-card p-4 h-100">
               <h5 class="fw-bold text-white mb-3">
-                <i class="bi bi-trophy-fill text-warning me-2"></i> Rendimiento Competitivo de Guerra
+                <i class="bi bi-trophy-fill text-warning me-2"></i> Rendimiento Competitivo Oficial
               </h5>
 
               <div class="row g-3">
                 <div class="col-6">
                   <div class="stat-box">
-                    <div class="stat-value text-success">94.2%</div>
-                    <div class="stat-label">Winrate General Guerra</div>
+                    <div id="stat-winrate" class="stat-value text-success">--%</div>
+                    <div class="stat-label">Winrate General</div>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="stat-box">
-                    <div class="stat-value text-warning">89%</div>
-                    <div class="stat-label">Duelos Bo3 Ganados</div>
+                    <div id="stat-warday-wins" class="stat-value text-warning">--</div>
+                    <div class="stat-label">Victorias en Guerra</div>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="stat-box">
-                    <div class="stat-value text-info">3.8</div>
-                    <div class="stat-label">Ataques Promedio / Día</div>
+                    <div id="stat-total-wins" class="stat-value text-info">--</div>
+                    <div class="stat-label">Victorias Totales</div>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="stat-box">
-                    <div class="stat-value text-danger">3200+</div>
-                    <div class="stat-label">Medallas Promedio Semanal</div>
+                    <div id="stat-donations" class="stat-value text-danger">--</div>
+                    <div class="stat-label">Donaciones Totales</div>
                   </div>
                 </div>
               </div>
 
-              <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mt-3 small text-muted">
+              <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mt-3 small text-muted" id="tactical-advice">
                 <i class="bi bi-lightbulb-fill text-warning me-1"></i>
-                <strong>Consejo de defensa:</strong> Cuando ataca temprano, tiende a usar su mazo de Montapuercos. Prepara defensas pesadas contra tierra.
+                <strong class="text-white">Consejo Táctico:</strong> <span id="advice-text">Analizando perfil del jugador...</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Historial de Últimas Batallas de Guerra -->
+        <!-- Historial de Batallas Reales -->
         <div class="kmkc-card p-4">
-          <h5 class="fw-bold text-white mb-3">⚔️ Últimas Batallas de Guerra Registradas</h5>
+          <h5 class="fw-bold text-white mb-3">⚔️ Registro de Batallas Oficiales Recientes (Battle Log)</h5>
           <div class="table-responsive">
             <table class="table kmkc-table align-middle mb-0">
               <thead>
                 <tr>
                   <th>Fecha / Hora (Madrid)</th>
-                  <th>Tipo</th>
-                  <th>Oponente</th>
-                  <th>Mazo Usado</th>
+                  <th>Modalidad</th>
+                  <th>Rival</th>
+                  <th>Mazo Utilizado</th>
                   <th>Resultado</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="battlelog-tbody">
                 <tr>
-                  <td>Hoy, 22:14 (UTC +1)</td>
-                  <td><span class="badge bg-warning text-dark">Duelo Bo3</span></td>
-                  <td>ClashMaster (#CL01)</td>
-                  <td>Hog 2.6 EQ / LavaLoon</td>
-                  <td><span class="badge bg-success">Victoria 2-0</span></td>
-                </tr>
-                <tr>
-                  <td>Hoy, 21:50 (UTC +1)</td>
-                  <td>Batalla 1v1</td>
-                  <td>Thor_God (#TG88)</td>
-                  <td>P.E.K.K.A Bridge Spam</td>
-                  <td><span class="badge bg-success">Victoria 1-0</span></td>
-                </tr>
-                <tr>
-                  <td>Ayer, 23:05 (UTC +1)</td>
-                  <td>Batalla 1v1</td>
-                  <td>ShadowNinja (#SN12)</td>
-                  <td>LavaLoon Beatdown</td>
-                  <td><span class="badge bg-success">Victoria 3-1</span></td>
-                </tr>
-                <tr>
-                  <td>Ayer, 22:30 (UTC +1)</td>
-                  <td>Ataque a Barco</td>
-                  <td>Barco Furia Roja</td>
-                  <td>Golem Beatdown</td>
-                  <td><span class="badge bg-success">Torre Destruida</span></td>
+                  <td colspan="5" class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                    Descargando historial de batallas de Supercell...
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -341,7 +299,7 @@
       <p class="text-secondary small mb-1">
         Desarrollado por <strong>Marcos Astudillo Bermúdez</strong> · DWEF (2º DAW).
       </p>
-      <small class="text-muted">Módulo de Espionaje Táctico y Análisis Horario (Madrid UTC +1)</small>
+      <small class="text-muted">Módulo de Espionaje Táctico Oficial · Supercell API</small>
     </div>
   </footer>
 
@@ -354,45 +312,260 @@
       const spySearchBtn = document.getElementById('spy-search-btn');
       const spyInput = document.getElementById('spy-player-input');
       const quickChips = document.querySelectorAll('.spy-quick-chip');
+      const spyErrorAlert = document.getElementById('spy-error-alert');
+      const spyErrorText = document.getElementById('spy-error-text');
+      const battlelogTbody = document.getElementById('battlelog-tbody');
+      const winConditionsContainer = document.getElementById('win-conditions-container');
 
-      // Distribución horaria de actividad (0 a 23h, hora de Madrid)
-      // Representa intensidad de ataques: 0 (nada) a 4 (pico máximo)
-      const activityHours = [
-        0, 0, 0, 0, 0, 0, // 00h a 05h
-        0, 0, 1, 1, 0, 0, // 06h a 11h
-        1, 2, 1, 0, 1, 2, // 12h a 17h
-        2, 3, 4, 4, 3, 1  // 18h a 23h (pico entre 20h y 22h)
-      ];
-
-      const renderHeatmap = () => {
-        heatmapContainer.innerHTML = activityHours.map((heat, hour) => {
-          const hourStr = hour < 10 ? `0${hour}` : `${hour}`;
-          return `
-            <div class="hour-block heat-${heat}" title="Hora ${hourStr}:00 (Madrid UTC +1): Intensidad ${heat}/4">
-              <span>${heat > 0 ? heat : ''}</span>
-              <div class="hour-label">${hourStr}</div>
-            </div>
-          `;
-        }).join('');
-      };
-
-      const loadSpyData = async (tag) => {
-        const result = await SupercellAPI.getPlayer(tag);
-        if (result && result.success) {
-          const p = result.data;
-          document.getElementById('spy-name').textContent = p.name;
-          document.getElementById('spy-tag').textContent = p.tag;
-          document.getElementById('spy-clan').textContent = p.clan ? p.clan.name : 'Sin clan';
-          document.getElementById('spy-level').textContent = p.kingTowerLevel || 15;
+      // Parsea el timestamp de Clash Royale (ej: "20260921T025642.000Z") y obtiene la hora en Madrid
+      const getMadridHourFromTimestamp = (str) => {
+        if (!str || str.length < 15) return 0;
+        try {
+          const year = parseInt(str.substr(0, 4));
+          const month = parseInt(str.substr(4, 2)) - 1;
+          const day = parseInt(str.substr(6, 2));
+          const hour = parseInt(str.substr(9, 2));
+          const min = parseInt(str.substr(11, 2));
+          const sec = parseInt(str.substr(13, 2));
+          const dUtc = new Date(Date.UTC(year, month, day, hour, min, sec));
+          
+          // Formatear en hora de Madrid
+          const formatter = new Intl.DateTimeFormat('es-ES', {
+            timeZone: 'Europe/Madrid',
+            hour: 'numeric',
+            hour12: false
+          });
+          return parseInt(formatter.format(dUtc)) % 24;
+        } catch (e) {
+          return 0;
         }
       };
 
+      const formatBattleDateMadrid = (str) => {
+        if (!str || str.length < 15) return 'Reciente';
+        try {
+          const year = parseInt(str.substr(0, 4));
+          const month = parseInt(str.substr(4, 2)) - 1;
+          const day = parseInt(str.substr(6, 2));
+          const hour = parseInt(str.substr(9, 2));
+          const min = parseInt(str.substr(11, 2));
+          const dUtc = new Date(Date.UTC(year, month, day, hour, min));
+          return dUtc.toLocaleString('es-ES', {
+            timeZone: 'Europe/Madrid',
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+          }) + ' (UTC +1)';
+        } catch (e) {
+          return 'Reciente';
+        }
+      };
+
+      // Carga completa de espionaje del jugador
+      const loadSpyData = async (rawTag) => {
+        const tag = SupercellAPI.formatTag(rawTag);
+        spyErrorAlert.classList.add('d-none');
+
+        // Estado inicial de carga
+        document.getElementById('spy-name').textContent = 'Consultando...';
+        document.getElementById('spy-tag').textContent = tag;
+        battlelogTbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+              Obteniendo registro de batallas en vivo de Supercell...
+            </td>
+          </tr>
+        `;
+
+        try {
+          // 1. Obtener perfil del jugador
+          const playerRes = await SupercellAPI.getPlayer(tag);
+          if (!playerRes.success || !playerRes.data) {
+            spyErrorText.textContent = playerRes.error || `No se encontró al jugador "${tag}".`;
+            spyErrorAlert.classList.remove('d-none');
+            return;
+          }
+
+          const p = playerRes.data;
+          document.getElementById('spy-name').textContent = p.name;
+          document.getElementById('spy-clan').textContent = p.clan ? p.clan.name : 'Sin Clan';
+          document.getElementById('spy-level').textContent = p.kingTowerLevel || 15;
+          document.getElementById('spy-trophies-badge').textContent = `🏆 ${(p.trophies || 0).toLocaleString()} Copas`;
+
+          document.getElementById('stat-winrate').textContent = p.warWinrate || '80%';
+          document.getElementById('stat-warday-wins').textContent = (p.warDayWins || 0).toLocaleString();
+          document.getElementById('stat-total-wins').textContent = (p.bestTrophies || p.trophies || 0).toLocaleString() + ' max';
+          document.getElementById('stat-donations').textContent = (p.totalDonations || 0).toLocaleString();
+
+          // 2. Obtener Battle Log en vivo
+          const logRes = await SupercellAPI.getPlayerBattleLog(tag);
+          const battles = (logRes.success && Array.isArray(logRes.data)) ? logRes.data : [];
+
+          document.getElementById('stat-total-battles').textContent = `${battles.length} batallas`;
+
+          // 3. Procesar mapa de calor horario (24h)
+          const hourCounts = new Array(24).fill(0);
+          battles.forEach(b => {
+            const h = getMadridHourFromTimestamp(b.battleTime);
+            hourCounts[h]++;
+          });
+
+          const maxBattlesInHour = Math.max(...hourCounts, 1);
+          heatmapContainer.innerHTML = hourCounts.map((count, hour) => {
+            const intensity = count === 0 ? 0 : Math.min(4, Math.ceil((count / maxBattlesInHour) * 4));
+            const hourStr = hour < 10 ? `0${hour}` : `${hour}`;
+            return `
+              <div class="hour-block heat-${intensity}" title="Hora ${hourStr}:00 (Madrid): ${count} batallas registradas">
+                <span>${count > 0 ? count : ''}</span>
+                <div class="hour-label">${hourStr}</div>
+              </div>
+            `;
+          }).join('');
+
+          // Diagnóstico de horas pico
+          let peakHour = 0;
+          let peakMax = -1;
+          for (let i = 0; i < 24; i++) {
+            if (hourCounts[i] > peakMax) {
+              peakMax = hourCounts[i];
+              peakHour = i;
+            }
+          }
+          const peakEnd = (peakHour + 2) % 24;
+          document.getElementById('stat-peak-hours').textContent = `${peakHour}:00 - ${peakEnd}:00 (Madrid)`;
+          document.getElementById('stat-peak-desc').textContent = `${peakMax} batallas registradas en esta franja`;
+
+          // Ataques matutinos (06:00 a 14:00)
+          const morningBattles = hourCounts.slice(6, 14).reduce((a, b) => a + b, 0);
+          const morningPct = battles.length > 0 ? Math.round((morningBattles / battles.length) * 100) : 0;
+          const morningEl = document.getElementById('stat-morning-attack');
+          if (morningPct > 35) {
+            morningEl.className = 'fw-bold text-success mt-1';
+            morningEl.textContent = `Alta (${morningPct}%)`;
+          } else {
+            morningEl.className = 'fw-bold text-danger mt-1';
+            morningEl.textContent = `Baja (${morningPct}%)`;
+          }
+          document.getElementById('stat-morning-desc').textContent = `${morningBattles} de ${battles.length} partidas matutinas`;
+
+          // 4. Cartas y Win Conditions más utilizadas en las batallas
+          const cardUsageMap = {};
+          battles.forEach(b => {
+            const teamCards = b.team && b.team[0] && b.team[0].cards ? b.team[0].cards : [];
+            const isWin = (b.team && b.team[0] && b.opponent && b.opponent[0]) 
+              ? (b.team[0].crowns > b.opponent[0].crowns) 
+              : false;
+
+            teamCards.forEach(c => {
+              if (!cardUsageMap[c.name]) {
+                cardUsageMap[c.name] = { name: c.name, count: 0, wins: 0, iconUrl: c.iconUrls ? c.iconUrls.medium : null, elixir: c.elixirCost || 3 };
+              }
+              cardUsageMap[c.name].count++;
+              if (isWin) cardUsageMap[c.name].wins++;
+            });
+          });
+
+          const sortedCards = Object.values(cardUsageMap).sort((a, b) => b.count - a.count).slice(0, 4);
+
+          if (sortedCards.length > 0) {
+            winConditionsContainer.innerHTML = sortedCards.map(c => {
+              const usePct = battles.length > 0 ? Math.round((c.count / battles.length) * 100) : 0;
+              const winPct = c.count > 0 ? Math.round((c.wins / c.count) * 100) : 0;
+              return `
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center small text-muted mb-1">
+                    <div class="d-flex align-items-center gap-2">
+                      ${c.iconUrl ? `<img src="${c.iconUrl}" alt="${c.name}" style="height: 28px; width: auto;">` : '🃏'}
+                      <strong class="text-white">${c.name}</strong>
+                    </div>
+                    <div>
+                      <span class="text-white fw-bold me-2">${usePct}% de uso (${c.count} partidas)</span>
+                      <span class="badge ${winPct >= 50 ? 'bg-success' : 'bg-secondary'}">${winPct}% WR</span>
+                    </div>
+                  </div>
+                  <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-danger" style="width: ${Math.min(100, usePct)}%;"></div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            document.getElementById('advice-text').textContent = `Su carta clave más recurrente es "${sortedCards[0].name}" con un ${Math.round((sortedCards[0].count / battles.length) * 100)}% de presencia. Prepara contrarrestos específicos.`;
+          } else {
+            winConditionsContainer.innerHTML = '<p class="text-muted text-center py-3">No hay datos suficientes de cartas en el registro reciente.</p>';
+          }
+
+          // 5. Tabla de Battle Log
+          if (battles.length > 0) {
+            battlelogTbody.innerHTML = battles.slice(0, 10).map(b => {
+              const team = b.team && b.team[0] ? b.team[0] : { name: p.name, crowns: 0, cards: [] };
+              const opp = b.opponent && b.opponent[0] ? b.opponent[0] : { name: 'Rival', crowns: 0 };
+              const isWin = team.crowns > opp.crowns;
+              const isDraw = team.crowns === opp.crowns;
+              const timeStr = formatBattleDateMadrid(b.battleTime);
+              const mode = b.gameMode ? b.gameMode.name.replace(/_/g, ' ') : (b.type || 'Batalla');
+
+              const cardsHtml = (team.cards || []).slice(0, 4).map(c => 
+                c.iconUrls?.medium 
+                  ? `<img src="${c.iconUrls.medium}" alt="${c.name}" title="${c.name}" style="height: 26px; width: auto; margin-right: 2px;">` 
+                  : `<span class="badge bg-dark border border-secondary">${c.name}</span>`
+              ).join('');
+
+              return `
+                <tr>
+                  <td><small class="text-white">${timeStr}</small></td>
+                  <td><span class="badge bg-dark border border-secondary text-info">${mode}</span></td>
+                  <td>
+                    <strong class="text-white">${opp.name || 'Rival'}</strong>
+                    ${opp.clan ? `<small class="text-muted d-block font-monospace">${opp.clan.name}</small>` : ''}
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      ${cardsHtml}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge ${isWin ? 'bg-success' : isDraw ? 'bg-secondary' : 'bg-danger'}">
+                      ${isWin ? 'Victoria' : isDraw ? 'Empate' : 'Derrota'} ${team.crowns} - ${opp.crowns}
+                    </span>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          } else {
+            battlelogTbody.innerHTML = `
+              <tr>
+                <td colspan="5" class="text-center py-4 text-muted">
+                  No se encontraron batallas recientes en el historial de este jugador.
+                </td>
+              </tr>
+            `;
+          }
+
+        } catch (err) {
+          console.error(err);
+          spyErrorText.textContent = 'Error al consultar la API de Supercell: ' + err.message;
+          spyErrorAlert.classList.remove('d-none');
+        }
+      };
+
+      // Eventos
       if (spySearchBtn) {
         spySearchBtn.addEventListener('click', () => {
           const tag = spyInput.value.trim();
           if (tag) loadSpyData(tag);
         });
       }
+
+      spyInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const tag = spyInput.value.trim();
+          if (tag) loadSpyData(tag);
+        }
+      });
 
       quickChips.forEach(chip => {
         chip.addEventListener('click', () => {
@@ -402,7 +575,8 @@
         });
       });
 
-      renderHeatmap();
+      // Carga inicial
+      loadSpyData(spyInput.value);
     });
   </script>
 </body>

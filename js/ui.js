@@ -20,8 +20,36 @@ const UIRenderer = (() => {
         <div class="spinner-border text-danger mb-3" style="width: 3rem; height: 3rem;" role="status">
           <span class="visually-hidden">Consultando Supercell API...</span>
         </div>
-        <h5 class="fw-bold">Consultando estadísticas en tiempo real...</h5>
-        <p class="text-muted">Obteniendo datos de Clan Wars 2</p>
+        <h5 class="fw-bold">Consultando API oficial de Supercell...</h5>
+        <p class="text-muted">Obteniendo datos en tiempo real de Clash Royale</p>
+      </div>
+    `;
+    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  /**
+   * Muestra mensaje de error cuando falla la consulta oficial
+   */
+  const showError = (message) => {
+    if (!resultsContainer || !resultsContent) return;
+    resultsContainer.classList.remove('d-none');
+    resultsContent.innerHTML = `
+      <div class="kmkc-card p-5 text-center my-3">
+        <div class="fs-1 text-danger mb-3">
+          <i class="bi bi-exclamation-octagon-fill"></i>
+        </div>
+        <h4 class="fw-bold text-white mb-2">Consulta no completada</h4>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 540px; font-size: 0.95rem;">
+          ${message}
+        </p>
+        <div class="d-flex justify-content-center gap-2">
+          <button class="btn btn-outline-secondary px-3" onclick="document.getElementById('results-section').classList.add('d-none')">
+            Cerrar
+          </button>
+          <button class="btn btn-upgrade px-3" data-bs-toggle="modal" data-bs-target="#apiConfigModal">
+            <i class="bi bi-gear-fill me-1"></i> Configurar API / Proxy
+          </button>
+        </div>
       </div>
     `;
     resultsContainer.scrollIntoView({ behavior: 'smooth' });
@@ -79,6 +107,7 @@ const UIRenderer = (() => {
               <div class="d-flex align-items-center gap-2">
                 <h2 class="fw-bold mb-0 text-white">${clan.name}</h2>
                 <span class="badge bg-dark border border-secondary text-info font-monospace">${clan.tag}</span>
+                <span class="badge bg-success bg-opacity-75 text-white"><i class="bi bi-broadcast me-1"></i> API Oficial</span>
               </div>
               <p class="text-muted mb-0 mt-1" style="max-width: 580px;">${clan.description || 'Sin descripción'}</p>
             </div>
@@ -194,7 +223,7 @@ const UIRenderer = (() => {
             ${deck.cards.map(card => `
               <div class="cr-card-item">
                 <span class="cr-card-elixir">${card.elixir}</span>
-                <span class="fs-4">${card.icon || '🃏'}</span>
+                ${card.imageUrl ? `<img src="${card.imageUrl}" alt="${card.name}" style="height: 48px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));">` : `<span class="fs-4">${card.icon || '🃏'}</span>`}
                 <div class="cr-card-name">${card.name}</div>
               </div>
             `).join('')}
@@ -215,6 +244,7 @@ const UIRenderer = (() => {
               <div class="d-flex align-items-center gap-2">
                 <h2 class="fw-bold mb-0 text-white">${player.name}</h2>
                 <span class="badge bg-dark border border-secondary text-info font-monospace">${player.tag}</span>
+                <span class="badge bg-success bg-opacity-75 text-white"><i class="bi bi-broadcast me-1"></i> API Oficial</span>
               </div>
               <p class="text-muted mb-0 mt-1">
                 Clan: <strong class="text-white">${player.clan ? player.clan.name : 'Sin clan'}</strong> (${player.role || 'Miembro'})
@@ -275,6 +305,18 @@ const UIRenderer = (() => {
   const renderLeaderboards = (clans) => {
     const tableBody = document.getElementById('leaderboard-tbody');
     if (!tableBody) return;
+
+    if (!clans || clans.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            <i class="bi bi-hdd-network text-warning fs-4 d-block mb-1"></i>
+            Inicia el proxy local (<code>python proxy.py</code>) para cargar el Ranking Mundial oficial en tiempo real.
+          </td>
+        </tr>
+      `;
+      return;
+    }
 
     tableBody.innerHTML = clans.map(clan => `
       <tr>
@@ -339,6 +381,7 @@ const UIRenderer = (() => {
 
   return {
     showLoading,
+    showError,
     renderClan,
     renderPlayer,
     renderLeaderboards,
