@@ -226,8 +226,12 @@ const SupercellAPI = (() => {
         warDayWins: data.warDayWins || 0,
         warWinrate: `${Math.min(99, Math.round(((data.wins || 1) / Math.max(1, (data.wins || 1) + (data.losses || 0))) * 100))}%`,
         favoriteCard: data.currentFavouriteCard ? data.currentFavouriteCard.name : 'Montapuercos',
-        kingTowerLevel: data.expLevel ? Math.min(15, Math.floor(data.expLevel / 4) + 1) : 15,
+        kingTowerLevel: data.kingLevel || (data.expLevel ? Math.min(16, Math.floor(data.expLevel / 4) + 1) : 16),
         totalDonations: data.totalDonations || data.donations || 0,
+        leagueStatistics: data.leagueStatistics || null,
+        pathOfLegendLeagueNumber: data.currentPathOfLegendSeasonResult
+          ? data.currentPathOfLegendSeasonResult.leagueNumber
+          : null,
         isLive: true,
         warDecks: [
           {
@@ -326,6 +330,36 @@ const SupercellAPI = (() => {
         cards: ['Lava Hound', 'Balloon', 'Inferno Dragon', 'Mega Minion', 'Tombstone', 'Guards', 'Arrows', 'Fireball']
       }
     ];
+  };
+
+  /**
+   * Obtiene el historial de carreras del río pasadas (hasta 10 semanas) de un clan
+   */
+  const getRiverRaceLog = async (rawTag) => {
+    const tag = formatTag(rawTag);
+    if (!config.token || !config.proxyUrl) {
+      return { success: false, error: 'Configura la API para continuar.' };
+    }
+    try {
+      const encodedTag = encodeURIComponent(tag);
+      const url = `${config.proxyUrl.replace(/\/$/, '')}/clans/${encodedTag}/riverracelog?limit=10`;
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${config.token}`,
+          'Accept': 'application/json'
+        }
+      });
+      if (response.status === 404) {
+        return { success: false, error: `No se encontró historial de carreras para "${tag}".` };
+      }
+      if (!response.ok) {
+        return { success: false, error: `Error ${response.status} al consultar el historial de carreras.` };
+      }
+      const data = await response.json();
+      return { success: true, data: data.items || [] };
+    } catch (err) {
+      return { success: false, error: 'No se pudo conectar con el proxy de Supercell.' };
+    }
   };
 
   /**
@@ -462,6 +496,7 @@ const SupercellAPI = (() => {
     getClan,
     getPlayer,
     getRiverRace,
+    getRiverRaceLog,
     getPlayerBattleLog,
     getCards,
     getPlayerFull,

@@ -133,6 +133,9 @@
               <p class="text-muted mb-0 mt-1">
                 Clan: <strong id="spy-clan" class="text-white">Consultando...</strong> · Nivel de Torre <span id="spy-level" class="text-warning">--</span>
               </p>
+              <p class="mb-0 mt-1">
+                Liga: <span id="spy-league" class="badge bg-secondary px-2 py-1"><i class="bi bi-shield-fill me-1"></i> Consultando...</span>
+              </p>
             </div>
           </div>
           <div class="text-end">
@@ -391,8 +394,60 @@
           const p = playerRes.data;
           document.getElementById('spy-name').textContent = p.name;
           document.getElementById('spy-clan').textContent = p.clan ? p.clan.name : 'Sin Clan';
-          document.getElementById('spy-level').textContent = p.kingTowerLevel || 15;
+          document.getElementById('spy-level').textContent = p.kingTowerLevel || 16;
           document.getElementById('spy-trophies-badge').textContent = `🏆 ${(p.trophies || 0).toLocaleString()} Copas`;
+
+          // Liga Competitiva desde la API
+          const leagueEl = document.getElementById('spy-league');
+
+          // Prioridad 1: pathOfLegendLeagueNumber (de currentPathOfLegendSeasonResult)
+          if (p.pathOfLegendLeagueNumber !== null && p.pathOfLegendLeagueNumber !== undefined) {
+            const ln = p.pathOfLegendLeagueNumber;
+            // Liga 7 = "Ultimate Champion"
+            const leagueNames = {
+              1: '⚪ Liga 1', 2: '🔵 Liga 2', 3: '🟢 Liga 3',
+              4: '🟡 Liga 4', 5: '🟠 Liga 5', 6: '🔴 Liga 6', 7: '👑 Liga 7'
+            };
+            const leagueColors = {
+              1: 'bg-secondary', 2: 'bg-primary', 3: 'bg-success',
+              4: 'bg-warning text-dark', 5: 'bg-warning text-dark', 6: 'bg-danger', 7: 'bg-danger'
+            };
+            const leagueName = leagueNames[ln] || `Liga ${ln}`;
+            const leagueColor = leagueColors[ln] || 'bg-secondary';
+            // Si es Liga 7, añadir las medallas del leagueStatistics
+            let extraInfo = '';
+            if (ln === 7 && p.leagueStatistics && p.leagueStatistics.currentSeason) {
+              const medals = p.leagueStatistics.currentSeason.trophies || p.leagueStatistics.currentSeason.bestTrophies || 0;
+              if (medals > 0) extraInfo = ` (${medals.toLocaleString()} medallas)`;
+            }
+            leagueEl.className = `badge ${leagueColor} px-2 py-1`;
+            leagueEl.innerHTML = `<i class="bi bi-shield-fill me-1"></i> ${leagueName}${extraInfo}`;
+          }
+          // Prioridad 2: leagueStatistics.currentSeason (trofeos por rango)
+          else if (p.leagueStatistics && p.leagueStatistics.currentSeason) {
+            const trophies = p.leagueStatistics.currentSeason.trophies || p.leagueStatistics.currentSeason.bestTrophies || 0;
+            let leagueName, leagueColor;
+            if (trophies >= 9000) {
+              leagueName = `👑 Liga 7 (${trophies.toLocaleString()} medallas)`; leagueColor = 'bg-danger';
+            } else if (trophies >= 7000) {
+              leagueName = '🔴 Liga 6'; leagueColor = 'bg-danger';
+            } else if (trophies >= 5000) {
+              leagueName = '🟠 Liga 5'; leagueColor = 'bg-warning text-dark';
+            } else if (trophies >= 3000) {
+              leagueName = '🟡 Liga 4'; leagueColor = 'bg-warning text-dark';
+            } else if (trophies >= 2000) {
+              leagueName = '🟢 Liga 3'; leagueColor = 'bg-success';
+            } else if (trophies >= 1000) {
+              leagueName = '🔵 Liga 2'; leagueColor = 'bg-primary';
+            } else {
+              leagueName = '⚪ Liga 1'; leagueColor = 'bg-secondary';
+            }
+            leagueEl.className = `badge ${leagueColor} px-2 py-1`;
+            leagueEl.innerHTML = `<i class="bi bi-shield-fill me-1"></i> ${leagueName}`;
+          } else {
+            leagueEl.className = 'badge bg-secondary px-2 py-1';
+            leagueEl.innerHTML = '<i class="bi bi-shield me-1"></i> Sin liga competitiva';
+          }
 
           document.getElementById('stat-winrate').textContent = p.warWinrate || '80%';
           document.getElementById('stat-warday-wins').textContent = (p.warDayWins || 0).toLocaleString();

@@ -273,6 +273,23 @@
         </div>
       </div>
 
+      <!-- Historial de Carreras del Río Pasadas (riverracelog) -->
+      <div class="kmkc-card p-4 mt-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <h5 class="fw-bold text-white mb-1">📜 Historial de Carreras del Río Pasadas (Riverracelog)</h5>
+            <p class="text-muted small mb-0">Datos de los grupos fluviales anteriores — rivales habituales, fama acumulada y posiciones históricas.</p>
+          </div>
+          <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2">Hasta 10 semanas previas</span>
+        </div>
+        <div id="riverrace-log-container">
+          <div class="text-center py-4 text-muted">
+            <div class="spinner-border spinner-border-sm text-info me-2" role="status"></div>
+            Cargando historial de carreras pasadas...
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -429,10 +446,84 @@
           // 5. Renderizar Miembros
           renderMembers();
 
+          // 5. Cargar historial de carreras pasadas en paralelo
+          loadRiverRaceLog(tag);
+
         } catch (err) {
           console.error(err);
           warErrorText.textContent = 'Error de conexión con la API de Clash Royale: ' + err.message;
           warErrorAlert.classList.remove('d-none');
+        }
+      };
+
+      // Cargar historial de carreras del río pasadas
+      const loadRiverRaceLog = async (tag) => {
+        const logContainer = document.getElementById('riverrace-log-container');
+        logContainer.innerHTML = `
+          <div class="text-center py-4 text-muted">
+            <div class="spinner-border spinner-border-sm text-info me-2" role="status"></div>
+            Consultando historial de carreras pasadas desde Supercell...
+          </div>
+        `;
+        try {
+          const logRes = await SupercellAPI.getRiverRaceLog(tag);
+          if (!logRes.success || !logRes.data || logRes.data.length === 0) {
+            logContainer.innerHTML = '<p class="text-muted text-center py-3">No hay historial de carreras disponible.</p>';
+            return;
+          }
+          const races = logRes.data; // array de semanas
+          logContainer.innerHTML = races.map((race, idx) => {
+            const seasonIndex = race.seasonIndex !== undefined ? race.seasonIndex : '?';
+            const sectionIndex = race.sectionIndex !== undefined ? race.sectionIndex + 1 : '?';
+            const createdDate = race.createdDate || null;
+            const dateStr = createdDate ? new Date(createdDate).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) : `Semana ${idx + 1}`;
+            const standings = (race.standings || []).sort((a, b) => (a.rank || 99) - (b.rank || 99));
+            return `
+              <div class="p-3 rounded-3 mb-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                  <div>
+                    <strong class="text-white">📅 ${dateStr}</strong>
+                    <small class="text-muted d-block">Temporada ${seasonIndex} · Sección #${sectionIndex}</small>
+                  </div>
+                  <span class="badge bg-dark border border-secondary text-info">${standings.length} clanes</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-sm table-dark table-borderless mb-0">
+                    <thead>
+                      <tr class="text-muted small">
+                        <th>#</th>
+                        <th>Clan</th>
+                        <th>Tag</th>
+                        <th>Trofeos Ganados</th>
+                        <th>Fama Acumulada</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${standings.map(s => {
+                        const clan = s.clan || {};
+                        const isMyClan = (clan.tag || '').toUpperCase() === tag.toUpperCase();
+                        return `
+                          <tr class="${isMyClan ? 'table-primary' : ''}">
+                            <td><span class="badge ${s.rank === 1 ? 'bg-warning text-dark' : s.rank === 2 ? 'bg-secondary' : 'bg-dark border border-secondary'}">#${s.rank || '?'}</span></td>
+                            <td class="fw-bold text-white">
+                              ${clan.name || 'Desconocido'}
+                              ${isMyClan ? '<span class="badge bg-primary ms-1 small">Tu Clan</span>' : ''}
+                            </td>
+                            <td><small class="text-muted font-monospace">${clan.tag || '-'}</small></td>
+                            <td class="text-success fw-bold">${(s.trophyChange || 0) > 0 ? '+' : ''}${(s.trophyChange || 0).toLocaleString()} 🏆</td>
+                            <td class="text-warning">${(clan.fame || clan.clanScore || 0).toLocaleString()} 🎖️</td>
+                          </tr>
+                        `;
+                      }).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } catch (err) {
+          document.getElementById('riverrace-log-container').innerHTML = '<p class="text-danger text-center py-3">Error al cargar el historial de carreras.</p>';
+          console.error(err);
         }
       };
 

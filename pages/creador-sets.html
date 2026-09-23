@@ -326,44 +326,44 @@
       // 4 Mazos competitivos que NO repiten ninguna de las 32 cartas (nombres oficiales de la API)
       const warDecksPlan = {
         deck1: [
-          { name: 'Hog Rider', elixir: 4, fallbackLevel: 15 },
-          { name: 'Earthquake', elixir: 3, fallbackLevel: 15 },
-          { name: 'Musketeer', elixir: 4, fallbackLevel: 15 },
-          { name: 'Cannon', elixir: 3, fallbackLevel: 15 },
-          { name: 'Ice Golem', elixir: 2, fallbackLevel: 14 },
-          { name: 'The Log', elixir: 2, fallbackLevel: 15 },
-          { name: 'Fire Spirit', elixir: 1, fallbackLevel: 15 },
-          { name: 'Skeletons', elixir: 1, fallbackLevel: 15 }
+          { name: 'Hog Rider', elixir: 4, fallbackLevel: 16 },
+          { name: 'Earthquake', elixir: 3, fallbackLevel: 16 },
+          { name: 'Musketeer', elixir: 4, fallbackLevel: 16 },
+          { name: 'Cannon', elixir: 3, fallbackLevel: 16 },
+          { name: 'Ice Golem', elixir: 2, fallbackLevel: 15 },
+          { name: 'The Log', elixir: 2, fallbackLevel: 16 },
+          { name: 'Fire Spirit', elixir: 1, fallbackLevel: 16 },
+          { name: 'Skeletons', elixir: 1, fallbackLevel: 16 }
         ],
         deck2: [
-          { name: 'Lava Hound', elixir: 7, fallbackLevel: 15 },
-          { name: 'Balloon', elixir: 5, fallbackLevel: 15 },
-          { name: 'Mega Minion', elixir: 3, fallbackLevel: 15 },
-          { name: 'Inferno Dragon', elixir: 4, fallbackLevel: 15 },
-          { name: 'Guards', elixir: 3, fallbackLevel: 14 },
-          { name: 'Tombstone', elixir: 3, fallbackLevel: 15 },
-          { name: 'Arrows', elixir: 3, fallbackLevel: 15 },
-          { name: 'Fireball', elixir: 4, fallbackLevel: 15 }
+          { name: 'Lava Hound', elixir: 7, fallbackLevel: 16 },
+          { name: 'Balloon', elixir: 5, fallbackLevel: 16 },
+          { name: 'Mega Minion', elixir: 3, fallbackLevel: 16 },
+          { name: 'Inferno Dragon', elixir: 4, fallbackLevel: 16 },
+          { name: 'Guards', elixir: 3, fallbackLevel: 15 },
+          { name: 'Tombstone', elixir: 3, fallbackLevel: 16 },
+          { name: 'Arrows', elixir: 3, fallbackLevel: 16 },
+          { name: 'Fireball', elixir: 4, fallbackLevel: 16 }
         ],
         deck3: [
-          { name: 'P.E.K.K.A', elixir: 7, fallbackLevel: 15 },
-          { name: 'Battle Ram', elixir: 4, fallbackLevel: 15 },
-          { name: 'Bandit', elixir: 3, fallbackLevel: 15 },
-          { name: 'Royal Ghost', elixir: 3, fallbackLevel: 15 },
-          { name: 'Electro Wizard', elixir: 4, fallbackLevel: 15 },
-          { name: 'Poison', elixir: 4, fallbackLevel: 15 },
-          { name: 'Zap', elixir: 2, fallbackLevel: 15 },
-          { name: 'Minions', elixir: 3, fallbackLevel: 14 }
+          { name: 'P.E.K.K.A', elixir: 7, fallbackLevel: 16 },
+          { name: 'Battle Ram', elixir: 4, fallbackLevel: 16 },
+          { name: 'Bandit', elixir: 3, fallbackLevel: 16 },
+          { name: 'Royal Ghost', elixir: 3, fallbackLevel: 16 },
+          { name: 'Electro Wizard', elixir: 4, fallbackLevel: 16 },
+          { name: 'Poison', elixir: 4, fallbackLevel: 16 },
+          { name: 'Zap', elixir: 2, fallbackLevel: 16 },
+          { name: 'Minions', elixir: 3, fallbackLevel: 15 }
         ],
         deck4: [
-          { name: 'Graveyard', elixir: 5, fallbackLevel: 15 },
-          { name: 'Skeleton King', elixir: 4, fallbackLevel: 15 },
-          { name: 'Baby Dragon', elixir: 4, fallbackLevel: 15 },
-          { name: 'Knight', elixir: 3, fallbackLevel: 15 },
-          { name: 'Tornado', elixir: 3, fallbackLevel: 15 },
-          { name: 'Bomb Tower', elixir: 4, fallbackLevel: 15 },
-          { name: 'Barbarian Barrel', elixir: 2, fallbackLevel: 15 },
-          { name: 'Ice Spirit', elixir: 1, fallbackLevel: 14 }
+          { name: 'Graveyard', elixir: 5, fallbackLevel: 16 },
+          { name: 'Skeleton King', elixir: 4, fallbackLevel: 16 },
+          { name: 'Baby Dragon', elixir: 4, fallbackLevel: 16 },
+          { name: 'Knight', elixir: 3, fallbackLevel: 16 },
+          { name: 'Tornado', elixir: 3, fallbackLevel: 16 },
+          { name: 'Bomb Tower', elixir: 4, fallbackLevel: 16 },
+          { name: 'Barbarian Barrel', elixir: 2, fallbackLevel: 16 },
+          { name: 'Ice Spirit', elixir: 1, fallbackLevel: 15 }
         ]
       };
 
@@ -393,7 +393,7 @@
             const elixir = officialCard.elixirCost || cPlan.elixir || 3;
             
             // Nivel real sincronizado o fallback
-            const cardLevel = playerLevelMap[cPlan.name.toLowerCase()] || cPlan.fallbackLevel || 15;
+            const cardLevel = playerLevelMap[cPlan.name.toLowerCase()] || cPlan.fallbackLevel || 16;
             totalLevels += cardLevel;
             totalCardsCount++;
 
@@ -406,7 +406,7 @@
                     : `<span class="fs-4">🃏</span>`
                   }
                   <div class="cr-card-name" style="font-size: 0.68rem; margin-top: 2px;">${cPlan.name}</div>
-                  <span class="badge ${cardLevel === 15 ? 'bg-danger' : cardLevel === 14 ? 'bg-warning text-dark' : 'bg-secondary'} mt-1" style="font-size: 0.62rem; padding: 2px 6px;">
+                  <span class="badge ${cardLevel >= 16 ? 'bg-danger' : cardLevel >= 14 ? 'bg-warning text-dark' : 'bg-secondary'} mt-1" style="font-size: 0.62rem; padding: 2px 6px;">
                     Nvl ${cardLevel}
                   </span>
                 </div>
@@ -418,7 +418,7 @@
         // Actualizar métricas del set
         if (totalCardsCount > 0) {
           const avgLvl = (totalLevels / totalCardsCount).toFixed(1);
-          document.getElementById('set-avg-level').textContent = `Nivel ${avgLvl} (${Math.round((totalLevels / (totalCardsCount * 15)) * 100)}% Élite)`;
+          document.getElementById('set-avg-level').textContent = `Nivel ${avgLvl} (${Math.round((totalLevels / (totalCardsCount * 16)) * 100)}% Élite)`;
         }
 
         document.getElementById('validation-status').innerHTML = `
@@ -447,10 +447,11 @@
           playerLevelMap = {};
 
           unlockedCards.forEach(c => {
-            // El nivel en la API es relative to maxLevel (ej: level 14, maxLevel 15)
-            // Calculamos el nivel estándar (1 a 15)
-            const standardLevel = c.level + (15 - (c.maxLevel || 15));
-            playerLevelMap[c.name.toLowerCase()] = Math.max(1, Math.min(15, standardLevel));
+            // La API devuelve el nivel relativo al maxLevel (ej: level=14, maxLevel=14 => nivel real 16)
+            // maxLevel en la API es el nivel máximo de esa carta (14 para la mayoría, 13 para legendarias)
+            // Fórmula: nivelReal = level + (16 - maxLevel)
+            const standardLevel = c.level + (16 - (c.maxLevel || 14));
+            playerLevelMap[c.name.toLowerCase()] = Math.max(1, Math.min(16, standardLevel));
           });
 
           renderDeckSlots();
