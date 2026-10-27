@@ -1,6 +1,5 @@
 /* ==========================================================================
    KMKCStats - Clan Wars 2 Analytics & Tracker
-   Inspirado en la interfaz y diseño oscuro de CWStats
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -23,7 +22,7 @@
   --kmkc-text-primary: #ffffff;
   --kmkc-text-secondary: #94a3b8;
   --kmkc-text-muted: #64748b;
-  
+
   --kmkc-glow: rgba(255, 0, 122, 0.15);
 }
 
@@ -282,11 +281,19 @@ body {
 
 .quick-tags {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quick-tags-row {
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
 }
 
 .quick-tag-chip {
@@ -717,11 +724,31 @@ body {
 }
 
 /* Niveles de calor para el horario */
-.heat-0 { background-color: rgba(255, 255, 255, 0.04); }
-.heat-1 { background-color: rgba(255, 122, 0, 0.25); color: #ffb066; }
-.heat-2 { background-color: rgba(255, 122, 0, 0.55); color: #fff; }
-.heat-3 { background-color: rgba(255, 0, 122, 0.75); color: #fff; box-shadow: 0 0 10px rgba(255, 0, 122, 0.4); }
-.heat-4 { background-color: #ff007a; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 122, 0.7); }
+.heat-0 {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.heat-1 {
+  background-color: rgba(255, 122, 0, 0.25);
+  color: #ffb066;
+}
+
+.heat-2 {
+  background-color: rgba(255, 122, 0, 0.55);
+  color: #fff;
+}
+
+.heat-3 {
+  background-color: rgba(255, 0, 122, 0.75);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 0, 122, 0.4);
+}
+
+.heat-4 {
+  background-color: #ff007a;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 0, 122, 0.7);
+}
 
 /* Creador de Sets de Guerra (Slots de 4 Mazos) */
 .deck-slot-header {
@@ -823,8 +850,17 @@ body {
 }
 
 @keyframes pulseMedalGlow {
-  0%, 100% { box-shadow: 0 0 15px rgba(199, 125, 255, 0.4); transform: scale(1); }
-  50% { box-shadow: 0 0 30px rgba(199, 125, 255, 0.7); transform: scale(1.04); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(199, 125, 255, 0.4);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(199, 125, 255, 0.7);
+    transform: scale(1.04);
+  }
 }
 
 .badge-league-hero {
